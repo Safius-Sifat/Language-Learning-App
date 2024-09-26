@@ -1,0 +1,90 @@
+{
+  "project_info": {
+    "project_number": "778736067261",
+    "project_id": "movies-b232d",
+    "storage_bucket": "movies-b232d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:778736067261:android:d41eb9b2a82116f3b60dd4",
+        "android_client_info": {
+          "package_name": "com.agnibha.language_learning_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "778736067261-38vq4f3k9258b0ncah4urs3lkitj2uu9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOxrUkNQrZ_Um0KrAKJWiCemUas73QHtk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "778736067261-38vq4f3k9258b0ncah4urs3lkitj2uu9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "778736067261-fj4v4fpq7mehjlte0rbrdb10bovspdb2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.agnibha.translatorApp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:778736067261:android:3ca8e1c5359ea9afb60dd4",
+        "android_client_info": {
+          "package_name": "com.agnibha.translator_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "778736067261-52rkicgch2sch068reluvc8v6mcjob91.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.agnibha.translator_app",
+            "certificate_hash": "e69454fb2e7d3c213fca856ecdc04264a7419ca8"
+          }
+        },
+        {
+          "client_id": "778736067261-38vq4f3k9258b0ncah4urs3lkitj2uu9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOxrUkNQrZ_Um0KrAKJWiCemUas73QHtk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "778736067261-38vq4f3k9258b0ncah4urs3lkitj2uu9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "778736067261-fj4v4fpq7mehjlte0rbrdb10bovspdb2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.agnibha.translatorApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
