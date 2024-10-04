@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'routing/app_router.dart';
 
@@ -16,10 +17,12 @@ class MyApp extends ConsumerWidget {
       theme: ThemeData(
         colorSchemeSeed: primaryColor,
         unselectedWidgetColor: Colors.grey,
+        fontFamily: GoogleFonts.openSans().fontFamily,
         appBarTheme: const AppBarTheme(
-          backgroundColor: primaryColor,
-          foregroundColor: Colors.white,
-          elevation: 2,
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,
+          shadowColor: Colors.grey,
+          elevation: 1,
           centerTitle: true,
         ),
         scaffoldBackgroundColor: Colors.white,

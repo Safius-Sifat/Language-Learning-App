@@ -9,15 +9,22 @@ import '../constants/app_sizes.dart';
 /// @param onPressed - callback to be called when the button is pressed.
 class PrimaryButton extends StatelessWidget {
   const PrimaryButton(
-      {super.key, required this.text, this.isLoading = false, this.onPressed});
+      {super.key,
+      this.width = double.infinity,
+      this.height = Sizes.p24,
+      required this.text,
+      this.isLoading = false,
+      this.onPressed});
   final String text;
   final bool isLoading;
   final VoidCallback? onPressed;
+  final double width;
+  final double height;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: Sizes.p48,
-      width: double.infinity,
+      height: height,
+      width: width,
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
@@ -36,7 +43,7 @@ class PrimaryButton extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: Theme.of(context)
                     .textTheme
-                    .titleLarge!
+                    .titleMedium!
                     .copyWith(color: Colors.white),
               ),
       ),

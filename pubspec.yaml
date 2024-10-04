@@ -34,7 +34,6 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
-  get: ^4.6.6
   flutter_svg: ^2.0.10+1
   flutter_riverpod: ^2.5.1
   riverpod_annotation: ^2.3.5
@@ -43,16 +42,24 @@ dependencies:
   firebase_core: ^3.4.0
   firebase_auth: ^5.2.0
   google_sign_in: ^6.2.1
-  font_awesome_flutter: ^10.7.0
+  google_fonts: ^6.2.1
+  cloud_firestore: ^5.4.2
+  skeletonizer: ^1.4.2
+  flutter_initicon: ^3.0.1
+  freezed_annotation: ^2.4.4
+  json_annotation: ^4.9.0
+  toastification: ^2.3.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  freezed: ^2.5.2
   riverpod_generator: ^2.4.0
   build_runner: ^2.4.11
   custom_lint: ^0.6.4
   riverpod_lint: ^2.3.10
+  json_serializable: ^6.8.0
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -73,7 +80,6 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/icons/
     - assets/
   #   - images/a_dot_ham.jpeg
 

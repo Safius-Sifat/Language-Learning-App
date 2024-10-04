@@ -1,13 +1,13 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
-import 'package:language_learning_app/src/features/quiz/presentation/quiz/quiz_screen.dart';
-import 'package:language_learning_app/src/features/quiz/presentation/score/score_screen.dart';
-import 'package:language_learning_app/src/features/quiz/presentation/welcome/welcome_screen.dart';
+import 'package:language_learning_app/src/features/class/presentation/all_classrooms/all_classroom_screen.dart';
+import 'package:language_learning_app/src/features/class/presentation/classroom_actions/create_classroom.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../features/auth/repository/auth_repository.dart';
 import '../features/auth/screen/login_screen.dart';
 import '../features/auth/screen/regsitration_screen.dart';
+import '../features/class/presentation/classroom_actions/join_classroom.dart';
 import 'go_router_refresh_stream.dart';
 import 'not_found_screen.dart';
 
@@ -16,9 +16,9 @@ part 'app_router.g.dart';
 enum AppRoute {
   signIn,
   signUp,
-  welcome,
-  quiz,
-  score,
+  allClassrooms,
+  createClassroom,
+  joinClassroom,
 }
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -35,10 +35,10 @@ GoRouter goRouter(GoRouterRef ref) {
       final path = state.uri.path;
       if (isLoggedIn) {
         if (path == '/signIn' || path == '/signUp') {
-          return '/welcome';
+          return '/';
         }
       } else {
-        if (path == '/welcome') {
+        if (path == '/') {
           return '/signIn';
         }
       }
@@ -46,27 +46,6 @@ GoRouter goRouter(GoRouterRef ref) {
     },
     refreshListenable: GoRouterRefreshStream(authRepository.authStateChange),
     routes: [
-      GoRoute(
-        path: '/',
-        name: AppRoute.quiz.name,
-        pageBuilder: (context, state) => const NoTransitionPage(
-          child: QuizScreen(),
-        ),
-      ),
-      GoRoute(
-        path: '/welcome',
-        name: AppRoute.welcome.name,
-        pageBuilder: (context, state) => const NoTransitionPage(
-          child: WelcomeScreen(),
-        ),
-      ),
-      GoRoute(
-        path: '/score',
-        name: AppRoute.score.name,
-        pageBuilder: (context, state) => const NoTransitionPage(
-          child: ScoreScreen(),
-        ),
-      ),
       GoRoute(
         path: '/signIn',
         name: AppRoute.signIn.name,
@@ -80,6 +59,29 @@ GoRouter goRouter(GoRouterRef ref) {
         pageBuilder: (context, state) => const NoTransitionPage(
           child: RegistrationScreen(),
         ),
+      ),
+      GoRoute(
+        path: '/',
+        name: AppRoute.allClassrooms.name,
+        pageBuilder: (context, state) => const NoTransitionPage(
+          child: AllClassroomScreen(),
+        ),
+        routes: [
+          GoRoute(
+            path: 'createClassroom',
+            name: AppRoute.createClassroom.name,
+            pageBuilder: (context, state) => const NoTransitionPage(
+              child: CreateClassroomScreen(),
+            ),
+          ),
+          GoRoute(
+            path: 'joinClassroom',
+            name: AppRoute.joinClassroom.name,
+            pageBuilder: (context, state) => const NoTransitionPage(
+              child: JoinClassroomScreen(),
+            ),
+          ),
+        ],
       ),
     ],
     errorPageBuilder: (context, state) => const NoTransitionPage(
