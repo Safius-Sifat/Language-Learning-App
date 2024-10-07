@@ -1,25 +1,30 @@
 part of 'alert_dialogs.dart';
 
-Future<void> showExceptionAlertDialog({
+void showExceptionAlertDialog({
   required BuildContext context,
   required String title,
   required dynamic exception,
 }) =>
-    showAlertDialog(
-      context: context,
-      title: title,
-      content: _message(exception),
-      defaultActionText: 'OK',
-    );
+    errorToast(ctx: context, title: title, description: _message(exception));
+// showAlertDialog(
+//   context: context,
+//   title: title,
+//   content: _message(exception),
+//   defaultActionText: 'OK',
+// );
 
 String _message(dynamic exception) {
   if (exception is FirebaseAuthException) {
     return _errors[exception.code] ??
         'An unknown error occurred. Please try again later.';
   }
+
+  if (exception is AppException) {
+    return exception.message;
+  }
   if (exception is FirebaseException) {
-    return exception.message ??
-        'An unknown error occurred. Please try again later.';
+    return exception.message ?? exception.toString();
+    // 'An unknown error occurred. Please try again later.';
   }
   if (exception is PlatformException) {
     return exception.message ?? exception.toString();

@@ -1,21 +1,30 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../constants/firebase_constants.dart';
 import '../../../utils/firebase_providers.dart';
+import '../domain/user_model.dart';
 
 part 'auth_repository.g.dart';
 
 class AuthRepository {
   final GoogleSignIn _googleSignIn;
   final FirebaseAuth _auth;
+  final FirebaseFirestore _firestore;
 
   AuthRepository(
-      {required GoogleSignIn googleSignIn, required FirebaseAuth firebaseAuth})
+      {required GoogleSignIn googleSignIn,
+      required FirebaseAuth firebaseAuth,
+      required FirebaseFirestore firestore})
       : _googleSignIn = googleSignIn,
+        _firestore = firestore,
         _auth = firebaseAuth;
 
+  CollectionReference get _user =>
+      _firestore.collection(FirebaseConstants.usersCollection);
   Stream<User?> get authStateChange => _auth.authStateChanges();
   User? get currentUser => _auth.currentUser;
 
@@ -33,17 +42,35 @@ class AuthRepository {
       idToken: googleAuth.idToken,
     );
 
-    await _auth.signInWithCredential(credential);
+    final userCredential = await _auth.signInWithCredential(credential);
+    if (userCredential.additionalUserInfo?.isNewUser ?? true) {
+      final userModel = UserModel(
+        id: userCredential.user?.uid,
+        name: userCredential.user?.displayName,
+        email: userCredential.user?.email ?? '',
+        photoUrl: userCredential.user?.photoURL,
+      );
+      await _user.doc(userCredential.user?.uid).set(userModel.toDocument());
+    } // handle
   }
 
   Future<void> registerWithEmail({
     required String email,
     required String password,
   }) async {
-    await _auth.createUserWithEmailAndPassword(
+    final userCredential = await _auth.createUserWithEmailAndPassword(
       email: email,
       password: password,
     );
+
+    if (userCredential.additionalUserInfo?.isNewUser ?? true) {
+      final userModel = UserModel(
+        name: userCredential.user?.displayName,
+        email: userCredential.user!.email!,
+        photoUrl: userCredential.user?.photoURL,
+      );
+      await _user.doc(userCredential.user!.uid).set(userModel.toJson());
+    } // handle
   }
 
   Future<void> loginWithEmail({
@@ -66,7 +93,12 @@ class AuthRepository {
 AuthRepository authRepository(AuthRepositoryRef ref) {
   final googleSignIn = ref.watch(googleSignInProvider);
   final firebaseAuth = ref.watch(firebaseAuthProvider);
-  return AuthRepository(googleSignIn: googleSignIn, firebaseAuth: firebaseAuth);
+  final firestore = ref.watch(firestoreProvider);
+
+  return AuthRepository(
+      googleSignIn: googleSignIn,
+      firebaseAuth: firebaseAuth,
+      firestore: firestore);
 }
 
 @Riverpod(keepAlive: true)

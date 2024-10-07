@@ -42,6 +42,27 @@ class DeleteClassroom extends _$DeleteClassroom {
 }
 
 @riverpod
+class LeaveClassroom extends _$LeaveClassroom {
+  @override
+  FutureOr<void> build() async {
+    return;
+  }
+
+  Future<bool> leaveClassroom(String classroomId) async {
+    final user = ref.read(authRepositoryProvider).currentUser;
+    if (user == null) {
+      throw UserNotFoundException();
+    }
+    final repo = ref.read(classroomRepositoryProvider);
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() {
+      return repo.leaveClassroom(classroomId, user.uid);
+    });
+    return !state.hasError;
+  }
+}
+
+@riverpod
 class JoinClassroom extends _$JoinClassroom {
   @override
   FutureOr<void> build() async {
@@ -55,7 +76,7 @@ class JoinClassroom extends _$JoinClassroom {
     }
     final repo = ref.read(classroomRepositoryProvider);
     state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() {
+    state = await AsyncValue.guard(() async {
       return repo.joinClassroom(user.uid, code);
     });
     return !state.hasError;

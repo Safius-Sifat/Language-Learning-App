@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:language_learning_app/src/features/auth/repository/auth_repository.dart';
 import 'package:language_learning_app/src/features/class/presentation/classroom_controller.dart';
 import 'package:language_learning_app/src/utils/async_value_ui.dart';
 import 'package:language_learning_app/src/utils/toastification.dart';
 
 import '../../../../constants/app_sizes.dart';
+import '../../../../routing/app_router.dart';
+import '../../data/classroom_repository.dart';
 import '../../domain/classroom.dart';
 
 class ClassCard extends ConsumerWidget {
@@ -20,9 +23,13 @@ class ClassCard extends ConsumerWidget {
       (_, state) => state.showAlertDialogOnError(context),
     );
 
+    ref.listen<AsyncValue<dynamic>>(
+      leaveClassroomProvider,
+      (_, state) => state.showAlertDialogOnError(context),
+    );
     return InkWell(
       onTap: () {
-        // ref.read(classroomProvider.notifier).deleteClassroom(classroom.id);
+        context.goNamed(AppRoute.posts.name, extra: classroom);
       },
       borderRadius: BorderRadius.circular(Sizes.p12),
       splashColor: Colors.white70,
@@ -50,20 +57,38 @@ class ClassCard extends ConsumerWidget {
                 ),
                 const Spacer(),
                 PopupMenuButton(
+                  iconColor: Colors.white,
                   itemBuilder: (context) {
                     return [
-                      PopupMenuItem(
-                        child: const Text('Delete'),
-                        onTap: () async {
-                          final success = await ref
-                              .read(deleteClassroomProvider.notifier)
-                              .deleteClassroom(classroom.id!);
-                          if (success) {
-                            successToast(
-                                ctx: context, title: 'Classroom deleted');
-                          }
-                        },
-                      ),
+                      if (currentUser?.uid == classroom.teacherId)
+                        PopupMenuItem(
+                          child: const Text('Delete'),
+                          onTap: () async {
+                            final success = await ref
+                                .read(deleteClassroomProvider.notifier)
+                                .deleteClassroom(classroom.id!);
+                            if (success) {
+                              ref.invalidate(classroomsProvider);
+
+                              successToast(
+                                  ctx: context, title: 'Classroom deleted');
+                            }
+                          },
+                        ),
+                      if (currentUser?.uid != classroom.teacherId)
+                        PopupMenuItem(
+                          child: const Text('Leave'),
+                          onTap: () async {
+                            final success = await ref
+                                .read(leaveClassroomProvider.notifier)
+                                .leaveClassroom(classroom.id!);
+                            if (success) {
+                              ref.invalidate(classroomsProvider);
+                              successToast(
+                                  ctx: context, title: 'Left from the class');
+                            }
+                          },
+                        ),
                     ];
                   },
                 ),

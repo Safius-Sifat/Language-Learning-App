@@ -3,10 +3,13 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:language_learning_app/src/exception/app_exception.dart';
 import 'package:language_learning_app/src/features/auth/repository/auth_repository.dart';
+import 'package:language_learning_app/src/features/pronunciation/domain/pronunciation_model.dart';
+import 'package:language_learning_app/src/features/vocabulary/domain/vocabulary_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../constants/firebase_constants.dart';
 import '../../../utils/firebase_providers.dart';
+import '../../video/domain/video.dart';
 import '../domain/classroom.dart';
 part 'classroom_repository.g.dart';
 
@@ -35,8 +38,8 @@ class ClassroomRepository {
   //
   //   // return response.map((doc) => Classroom.fromDocument(doc)).toList();
   //
-  //   final teacherRooms = teacher.map((snapshot) =>
-  //       snapshot.docs.map((doc) => Classroom.fromDocument(doc)).toList());
+  // final teacherRooms = teacher.map((snapshot) =>
+  //     snapshot.docs.map((doc) => Classroom.fromDocument(doc)).toList());
   //   final studentRooms = student.map((snapshot) =>
   //       snapshot.docs.map((doc) => Classroom.fromDocument(doc)).toList());
   //   StreamController<List<Classroom>> mergeController =
@@ -52,14 +55,42 @@ class ClassroomRepository {
     return response.id;
   }
 
+  Stream<List<Object>> fetchAssignments(String classroomId) {
+    final postsResponse = _firestore
+        .collection(FirebaseConstants.postCollection)
+        .where('classroomId', isEqualTo: classroomId)
+        .orderBy('createdAt', descending: true)
+        .snapshots();
+
+    final posts = postsResponse.map((snapshot) => snapshot.docs.map((doc) {
+          final data = doc.data();
+          if (data['type'] == 'pronunciation') {
+            return PronunciationModel.fromDocument(doc);
+          } else if (data['type'] == 'video') {
+            return Video.fromDocument(doc);
+          } else {
+            return VocabularyModel.fromDocument(doc);
+          }
+        }).toList());
+
+    return posts;
+  }
+
   Future<void> joinClassroom(String id, String code) async {
     final result = await _classroom.where('code', isEqualTo: code).get();
+
+    if (result.docs.isEmpty) {
+      throw ClassroomNotFoundException();
+    }
     final classroom = Classroom.fromDocument(result.docs.first);
+    print(classroom);
     if (classroom.students.contains(id)) {
       throw AlreadyMemberException();
-    } else if (classroom.teacherId == id) {
+    }
+    if (classroom.teacherId == id) {
       throw CreatorClassroomException();
     }
+    print('No exception found');
     if (classroom.code == code) {
       await _classroom.doc(classroom.id).update({
         'students': FieldValue.arrayUnion([id])
@@ -67,9 +98,12 @@ class ClassroomRepository {
     }
   }
 
-  // Future<Classroom> updateClassroom(Classroom classroom) async {
-  //   // Update classroom in API
-  // }
+  Future<void> leaveClassroom(String classroomId, String userId) async {
+    await _classroom.doc(classroomId).update({
+      'students': FieldValue.arrayRemove([userId])
+    });
+  }
+
   Future<void> deleteClassroom(String id) async {
     await _classroom.doc(id).delete();
   }
@@ -81,7 +115,7 @@ ClassroomRepository classroomRepository(ClassroomRepositoryRef ref) {
   return ClassroomRepository(firestore);
 }
 
-@Riverpod(keepAlive: true)
+@riverpod
 Future<List<Classroom>> classrooms(ClassroomsRef ref) {
   final user = ref.read(authRepositoryProvider).currentUser;
   if (user == null) {
@@ -90,6 +124,14 @@ Future<List<Classroom>> classrooms(ClassroomsRef ref) {
   return ref.read(classroomRepositoryProvider).fetchClassrooms(user.uid);
 }
 
+@riverpod
+Stream<List<Object>> classroomPosts(ClassroomPostsRef ref, String classroomId) {
+  final user = ref.read(authRepositoryProvider).currentUser;
+  if (user == null) {
+    throw UserNotFoundException();
+  }
+  return ref.read(classroomRepositoryProvider).fetchAssignments(classroomId);
+}
 // @Riverpod(keepAlive: true)
 // Stream<List<Classroom>> watchClassrooms(WatchClassroomsRef ref) {
 //   return ref.read(classroomRepositoryProvider).watchClassrooms();

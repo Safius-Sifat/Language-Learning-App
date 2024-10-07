@@ -7,7 +7,9 @@ import 'package:language_learning_app/src/constants/app_sizes.dart';
 import 'package:language_learning_app/src/constants/constants.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
+import '../../../../app.dart';
 import '../../../../routing/app_router.dart';
+import '../../../auth/repository/auth_repository.dart';
 import '../../data/classroom_repository.dart';
 import '../../domain/classroom.dart';
 import 'class_card.dart';
@@ -21,10 +23,33 @@ class AllClassroomScreen extends ConsumerWidget {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Classrooms'),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.login_outlined),
+              onPressed: () async {
+                await ref.read(authRepositoryProvider).logOut();
+              },
+            )
+          ],
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: classrooms.when(
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.white,
+          shape: const CircleBorder(),
+          onPressed: () {
+            showClassModalSheet(context);
+          },
+          child: const Icon(
+            Icons.add,
+            color: MyApp.primaryColor,
+          ),
+        ),
+        body: RefreshIndicator(
+          onRefresh: () async {
+            await ref.refresh(classroomsProvider.future);
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: classrooms.when(
               skipLoadingOnRefresh: false,
               data: (classroomList) {
                 if (classroomList.isEmpty) {
@@ -53,7 +78,7 @@ class AllClassroomScreen extends ConsumerWidget {
                                 foregroundColor: kBlackColor,
                                 backgroundColor: Colors.transparent),
                             onPressed: () {
-                              // ref.read(classroomProvider.notifier).createClassroom(Classroom.empty());
+                              context.goNamed(AppRoute.joinClassroom.name);
                             },
                             child: const Text('Join Class'),
                           ),
@@ -75,52 +100,81 @@ class AllClassroomScreen extends ConsumerWidget {
                   separatorBuilder: (context, index) => gapH12,
                   itemBuilder: (context, index) {
                     return ClassCard(classroom: classroomList[index]);
-
-                    // return ListTile(
-                    //   title: Text(classroomList[index].name),
-                    //   subtitle: Text(classroomList[index].description),
-                    //   onTap: () {
-                    //     // ref.read(classroomProvider.notifier).deleteClassroom(index);
-                    //   },
-                    // );
                   },
                 );
               },
               error: (e, st) => Column(
-                    children: [
-                      const Spacer(),
-                      Expanded(
-                        child: Row(
-                          children: [
-                            const Spacer(),
-                            Expanded(flex: 5, child: SvgPicture.asset(kError)),
-                            const Spacer(),
-                          ],
-                        ),
-                      ),
-                      Text(e.toString()),
-                      Text(st.toString()),
-                      // const Text('Oops! Something went wrong'),
-                      gapH24,
-                      PrimaryButton(
-                        height: Sizes.p48,
-                        width: 300,
-                        onPressed: () {
-                          ref.invalidate(classroomsProvider);
-                        },
-                        text: 'Retry',
-                      ),
-                      const Spacer()
-                    ],
+                children: [
+                  const Spacer(),
+                  Expanded(
+                    child: Row(
+                      children: [
+                        const Spacer(),
+                        Expanded(flex: 5, child: SvgPicture.asset(kError)),
+                        const Spacer(),
+                      ],
+                    ),
                   ),
+                  Text(e.toString()),
+                  Text(st.toString()),
+                  // const Text('Oops! Something went wrong'),
+                  gapH24,
+                  PrimaryButton(
+                    height: Sizes.p48,
+                    width: 300,
+                    onPressed: () {
+                      ref.invalidate(classroomsProvider);
+                    },
+                    text: 'Retry',
+                  ),
+                  const Spacer()
+                ],
+              ),
               loading: () => Skeletonizer(
-                  enabled: true,
-                  child: ListView.separated(
-                      itemBuilder: (context, index) {
-                        return ClassCard(classroom: Classroom.empty());
-                      },
-                      separatorBuilder: (context, index) => gapH12,
-                      itemCount: 10))),
+                child: ListView.separated(
+                    itemBuilder: (context, index) {
+                      return ClassCard(classroom: Classroom.empty());
+                    },
+                    separatorBuilder: (context, index) => gapH12,
+                    itemCount: 6),
+              ),
+            ),
+          ),
         ));
   }
+}
+
+void showClassModalSheet(BuildContext context) {
+  showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Container(
+          height: 130,
+          decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(Sizes.p12),
+                  topRight: Radius.circular(Sizes.p12))),
+          child: Column(
+            children: [
+              ListTile(
+                title: const Text('Join Class'),
+                leading: const Icon(Icons.join_full),
+                onTap: () {
+                  context.pop();
+                  context.goNamed(AppRoute.joinClassroom.name);
+                },
+              ),
+              ListTile(
+                title: const Text('Create Class'),
+                leading: const Icon(Icons.add),
+                onTap: () {
+                  context.pop();
+                  context.goNamed(AppRoute.createClassroom.name);
+                },
+              ),
+            ],
+          ),
+        );
+      });
 }

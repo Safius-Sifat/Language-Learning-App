@@ -23,11 +23,11 @@ final classroomRepositoryProvider =
 );
 
 typedef ClassroomRepositoryRef = AutoDisposeProviderRef<ClassroomRepository>;
-String _$classroomsHash() => r'2b1f542a269cbd7233bd93c6611f62587c0e396f';
+String _$classroomsHash() => r'f654b9e7eefbdcb35d0d74a8f576cde43128f86f';
 
 /// See also [classrooms].
 @ProviderFor(classrooms)
-final classroomsProvider = FutureProvider<List<Classroom>>.internal(
+final classroomsProvider = AutoDisposeFutureProvider<List<Classroom>>.internal(
   classrooms,
   name: r'classroomsProvider',
   debugGetCreateSourceHash:
@@ -36,8 +36,8 @@ final classroomsProvider = FutureProvider<List<Classroom>>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef ClassroomsRef = FutureProviderRef<List<Classroom>>;
-String _$classroomsByIdHash() => r'dc63cba73c2654b7389fec19118b75b5e79369ea';
+typedef ClassroomsRef = AutoDisposeFutureProviderRef<List<Classroom>>;
+String _$classroomPostsHash() => r'7dc2c8211b59ad9c37acd14a95b0331c03f4cb95';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -59,6 +59,135 @@ class _SystemHash {
     return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
   }
 }
+
+/// See also [classroomPosts].
+@ProviderFor(classroomPosts)
+const classroomPostsProvider = ClassroomPostsFamily();
+
+/// See also [classroomPosts].
+class ClassroomPostsFamily extends Family<AsyncValue<List<Object>>> {
+  /// See also [classroomPosts].
+  const ClassroomPostsFamily();
+
+  /// See also [classroomPosts].
+  ClassroomPostsProvider call(
+    String classroomId,
+  ) {
+    return ClassroomPostsProvider(
+      classroomId,
+    );
+  }
+
+  @override
+  ClassroomPostsProvider getProviderOverride(
+    covariant ClassroomPostsProvider provider,
+  ) {
+    return call(
+      provider.classroomId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'classroomPostsProvider';
+}
+
+/// See also [classroomPosts].
+class ClassroomPostsProvider extends AutoDisposeStreamProvider<List<Object>> {
+  /// See also [classroomPosts].
+  ClassroomPostsProvider(
+    String classroomId,
+  ) : this._internal(
+          (ref) => classroomPosts(
+            ref as ClassroomPostsRef,
+            classroomId,
+          ),
+          from: classroomPostsProvider,
+          name: r'classroomPostsProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$classroomPostsHash,
+          dependencies: ClassroomPostsFamily._dependencies,
+          allTransitiveDependencies:
+              ClassroomPostsFamily._allTransitiveDependencies,
+          classroomId: classroomId,
+        );
+
+  ClassroomPostsProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.classroomId,
+  }) : super.internal();
+
+  final String classroomId;
+
+  @override
+  Override overrideWith(
+    Stream<List<Object>> Function(ClassroomPostsRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: ClassroomPostsProvider._internal(
+        (ref) => create(ref as ClassroomPostsRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        classroomId: classroomId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeStreamProviderElement<List<Object>> createElement() {
+    return _ClassroomPostsProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is ClassroomPostsProvider && other.classroomId == classroomId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, classroomId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin ClassroomPostsRef on AutoDisposeStreamProviderRef<List<Object>> {
+  /// The parameter `classroomId` of this provider.
+  String get classroomId;
+}
+
+class _ClassroomPostsProviderElement
+    extends AutoDisposeStreamProviderElement<List<Object>>
+    with ClassroomPostsRef {
+  _ClassroomPostsProviderElement(super.provider);
+
+  @override
+  String get classroomId => (origin as ClassroomPostsProvider).classroomId;
+}
+
+String _$classroomsByIdHash() => r'dc63cba73c2654b7389fec19118b75b5e79369ea';
 
 /// See also [classroomsById].
 @ProviderFor(classroomsById)

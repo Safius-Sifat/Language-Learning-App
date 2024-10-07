@@ -1,13 +1,24 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:language_learning_app/src/features/class/domain/classroom.dart';
 import 'package:language_learning_app/src/features/class/presentation/all_classrooms/all_classroom_screen.dart';
 import 'package:language_learning_app/src/features/class/presentation/classroom_actions/create_classroom.dart';
+import 'package:language_learning_app/src/features/class/presentation/detail/classroom_posts.dart';
+import 'package:language_learning_app/src/features/class/presentation/detail/participant_screen.dart';
+import 'package:language_learning_app/src/features/pronunciation/presentation/create_challenge/create_pronunciation_screen.dart';
+import 'package:language_learning_app/src/features/pronunciation/presentation/create_challenge/select_pronunciation_screen.dart';
+import 'package:language_learning_app/src/features/pronunciation/presentation/pronunciation_screen.dart';
+import 'package:language_learning_app/src/features/video/presentation/video_selection_screen.dart';
+import 'package:language_learning_app/src/features/vocabulary/presentation/learn_vocabulary_screen.dart';
+import 'package:language_learning_app/src/features/vocabulary/presentation/select_vocabulary_screen.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../features/auth/repository/auth_repository.dart';
 import '../features/auth/screen/login_screen.dart';
 import '../features/auth/screen/regsitration_screen.dart';
 import '../features/class/presentation/classroom_actions/join_classroom.dart';
+import '../features/pronunciation/domain/pronunciation_model.dart';
+import '../features/vocabulary/domain/vocabulary_model.dart';
 import 'go_router_refresh_stream.dart';
 import 'not_found_screen.dart';
 
@@ -19,10 +30,21 @@ enum AppRoute {
   allClassrooms,
   createClassroom,
   joinClassroom,
+  posts,
+  people,
+  recordPronunciation,
+  selectPronunciation,
+  createPronunciation,
+  selectVideo,
+  selectVocabulary,
+  learnVocabulary,
+  participants
 }
 
-final _rootNavigatorKey = GlobalKey<NavigatorState>();
+final _peopleNavigatorKey = GlobalKey<NavigatorState>();
 
+final _postsNavigatorKey = GlobalKey<NavigatorState>();
+final _rootNavigatorKey = GlobalKey<NavigatorState>();
 @Riverpod(keepAlive: true)
 GoRouter goRouter(GoRouterRef ref) {
   final authRepository = ref.watch(authRepositoryProvider);
@@ -81,6 +103,100 @@ GoRouter goRouter(GoRouterRef ref) {
               child: JoinClassroomScreen(),
             ),
           ),
+          GoRoute(
+            path: 'posts',
+            name: AppRoute.posts.name,
+            pageBuilder: (context, state) => NoTransitionPage(
+              child: ClassroomPosts(
+                classroom: state.extra! as Classroom,
+              ),
+            ),
+          ),
+
+          GoRoute(
+            path: 'createPronunciation/:text/:name/:deadline/:classroomId',
+            name: AppRoute.createPronunciation.name,
+            pageBuilder: (context, state) => NoTransitionPage(
+              child: CreatePronunciationScreen(
+                text: state.pathParameters['text']!,
+                name: state.pathParameters['name']!,
+                deadline: state.pathParameters['deadline']!,
+                classroomId: state.pathParameters['classroomId']!,
+              ),
+            ),
+          ),
+          GoRoute(
+            path: 'selectPronunciation/:classroomId',
+            name: AppRoute.selectPronunciation.name,
+            pageBuilder: (context, state) => NoTransitionPage(
+              child: SelectPronunciationScreen(
+                classroomId: state.pathParameters['classroomId']!,
+              ),
+            ),
+          ),
+          GoRoute(
+            path: 'recordPronunciation',
+            name: AppRoute.recordPronunciation.name,
+            pageBuilder: (context, state) => NoTransitionPage(
+              child: PronunciationScreen(
+                pronunciation: state.extra! as PronunciationModel,
+              ),
+            ),
+          ),
+          GoRoute(
+            path: 'selectVideo/:classroomId',
+            name: AppRoute.selectVideo.name,
+            pageBuilder: (context, state) => NoTransitionPage(
+              child: VideoSelectionScreen(
+                classroomId: state.pathParameters['classroomId']!,
+              ),
+            ),
+          ),
+          GoRoute(
+            path: 'selectVocabulary/:classroomId',
+            name: AppRoute.selectVocabulary.name,
+            pageBuilder: (context, state) => NoTransitionPage(
+              child: SelectVocabularyScreen(
+                classroomId: state.pathParameters['classroomId']!,
+              ),
+            ),
+          ),
+          GoRoute(
+            path: 'learnVocabulary',
+            name: AppRoute.learnVocabulary.name,
+            pageBuilder: (context, state) => NoTransitionPage(
+              child: LearnVocabularyScreen(
+                  vocabulary: state.extra! as VocabularyModel),
+            ),
+          ),
+
+          GoRoute(
+            path: 'participants',
+            name: AppRoute.participants.name,
+            pageBuilder: (context, state) => NoTransitionPage(
+              child: ParticipantScreen(
+                participants: state.extra! as List<Participant>,
+              ),
+            ),
+          ),
+          // StatefulShellRoute.indexedStack(
+          //   pageBuilder: (context, state, navigationShell) => NoTransitionPage(
+          //     child: ScaffoldWithNestedNavigation(
+          //         navigationShell: navigationShell),
+          //   ),
+          //   branches: [
+          //     StatefulShellBranch(navigatorKey: _postsNavigatorKey, routes: []),
+          //     StatefulShellBranch(navigatorKey: _peopleNavigatorKey, routes: [
+          //       GoRoute(
+          //         path: 'people',
+          //         name: AppRoute.people.name,
+          //         pageBuilder: (context, state) => const NoTransitionPage(
+          //           child: ClassroomPeople(),
+          //         ),
+          //       ),
+          //     ]),
+          //   ],
+          // )
         ],
       ),
     ],

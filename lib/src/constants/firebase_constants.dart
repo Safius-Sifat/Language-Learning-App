@@ -1,7 +1,10 @@
 class FirebaseConstants {
   static const String usersCollection = 'users';
-  static const String postsCollection = 'posts';
+  static const String pronunciationCollection = 'pronunciations';
   static const String classroomsCollection = 'classrooms';
+  static const String videoCollection = 'videos';
+
+  static const String postCollection = 'posts';
   // static const String postsCollection = 'posts';
   // static const String commentsCollection = 'comments';
   // static const String likesCollection = 'likes';

@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:language_learning_app/src/common/overlay_loader.dart';
 import 'package:language_learning_app/src/constants/app_sizes.dart';
-import 'package:language_learning_app/src/features/auth/repository/auth_repository.dart';
 import 'package:language_learning_app/src/features/class/data/classroom_repository.dart';
 import 'package:language_learning_app/src/utils/async_value_ui.dart';
 import 'package:language_learning_app/src/utils/toastification.dart';
@@ -53,6 +52,7 @@ class _JoinClassroomScreenState extends ConsumerState<JoinClassroomScreen> {
                     hintText: 'Enter class code here',
                     border: OutlineInputBorder(),
                   ),
+                  maxLength: 6,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter a class code';
@@ -63,16 +63,6 @@ class _JoinClassroomScreenState extends ConsumerState<JoinClassroomScreen> {
               ElevatedButton(
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
-                    final user = ref.read(authRepositoryProvider).currentUser;
-                    if (user == null) {
-                      errorToast(
-                        ctx: context,
-                        title: 'Error',
-                        description: 'Please login to create a classroom',
-                      );
-                      return;
-                    }
-
                     showOverlayLoader(context);
                     final success = await ref
                         .read(joinClassroomProvider.notifier)
@@ -86,7 +76,7 @@ class _JoinClassroomScreenState extends ConsumerState<JoinClassroomScreen> {
                     }
                   }
                 },
-                child: const Text('Create'),
+                child: const Text('Join'),
               ),
             ],
           ),

@@ -25,6 +25,10 @@ sealed class AppException implements Exception {
 //   WrongPasswordException()
 //       : super('wrong-password', 'Wrong password'.hardcoded);
 // }
+class ClassroomNotFoundException extends AppException {
+  ClassroomNotFoundException()
+      : super('classroom-not-found', 'Classroom not found'.hardcoded);
+}
 
 class UserNotFoundException extends AppException {
   UserNotFoundException()

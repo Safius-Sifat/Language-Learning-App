@@ -91,7 +91,7 @@ class _CreateClassroomScreenState extends ConsumerState<CreateClassroomScreen> {
                       );
                       return;
                     }
-                    int randomNumber = Random().nextInt(3) + 1;
+                    int randomNumber = Random(10000).nextInt(3) + 1;
                     final code = generateRandomCode();
 
                     final classroom = Classroom(

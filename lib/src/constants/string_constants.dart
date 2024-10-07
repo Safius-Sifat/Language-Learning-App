@@ -1,0 +1,7 @@
+const pronunciationConstants = [
+  'Meine Lieblingsjahreszeit ist der Herbst, wenn die Blätter sich bunt färben. Ich mache dann gerne lange Spaziergänge im Park. Die frische Luft und das Rascheln der Blätter unter meinen Füßen sind sehr entspannend. Nach dem Spaziergang trinke ich oft eine heiße Schokolade. ',
+  'Am Wochenende besuche ich gerne meine Großeltern. Wir verbringen den Nachmittag oft im Garten und spielen mit dem Hund. Abends kochen wir zusammen ein leckeres Abendessen. Danach schauen wir einen Film und genießen die Zeit zusammen.',
+  'Meine Lieblingsjahreszeit ist der Herbst, wenn die Blätter sich bunt färben. Ich mache dann gerne lange Spaziergänge im Park. Die frische Luft und das Rascheln der Blätter unter meinen Füßen sind sehr entspannend. Nach dem Spaziergang trinke ich oft eine heiße Schokolade.',
+  'Letztes Jahr habe ich eine Reise nach Berlin gemacht. Die Stadt hat so viel zu bieten, von historischen Sehenswürdigkeiten bis hin zu modernen Museen. Ich habe das Brandenburger Tor besucht und den berühmten Fernsehturm gesehen. Es war eine unvergessliche Reise voller neuer Eindrücke.',
+  'Letztes Jahr habe ich eine Reise nach Berlin gemacht. Die Stadt hat so viel zu bieten, von historischen Sehenswürdigkeiten bis hin zu modernen Museen. Ich habe das Brandenburger Tor besucht und den berühmten Fernsehturm gesehen. Es war eine unvergessliche Reise voller neuer Eindrücke.',
+];

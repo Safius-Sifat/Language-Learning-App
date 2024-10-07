@@ -55,7 +55,7 @@ class Classroom {
         code = 'laksdj',
         teacherName = 'laksdjflkaj',
         students = [],
-        photoUrl = 'https://picsum.photos/200';
+        photoUrl = 'assets/back-1.jpg';
 
   factory Classroom.fromJson(Map<String, dynamic> json) {
     return Classroom(

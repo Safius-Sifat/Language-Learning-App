@@ -11,6 +11,7 @@ void errorToast(
         style:
             const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
     description: Text(description),
+    alignment: Alignment.bottomCenter,
     type: ToastificationType.error,
     style: ToastificationStyle.flatColored,
     autoCloseDuration: const Duration(seconds: 5),

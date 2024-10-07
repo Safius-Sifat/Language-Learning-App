@@ -38,6 +38,22 @@ final deleteClassroomProvider =
 );
 
 typedef _$DeleteClassroom = AutoDisposeAsyncNotifier<void>;
+String _$leaveClassroomHash() => r'0aad5cdadf02793d7a0f39280295a2f9a8fc1127';
+
+/// See also [LeaveClassroom].
+@ProviderFor(LeaveClassroom)
+final leaveClassroomProvider =
+    AutoDisposeAsyncNotifierProvider<LeaveClassroom, void>.internal(
+  LeaveClassroom.new,
+  name: r'leaveClassroomProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$leaveClassroomHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$LeaveClassroom = AutoDisposeAsyncNotifier<void>;
 String _$joinClassroomHash() => r'dc7ae189f19d94a74a8948adcc86f07780f099b8';
 
 /// See also [JoinClassroom].

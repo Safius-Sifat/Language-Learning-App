@@ -48,5 +48,19 @@ final firestoreProvider = Provider<FirebaseFirestore>.internal(
 );
 
 typedef FirestoreRef = ProviderRef<FirebaseFirestore>;
+String _$storageHash() => r'c8fff5c018231961d6b14c9c5d96ef438cda7ac1';
+
+/// See also [storage].
+@ProviderFor(storage)
+final storageProvider = Provider<FirebaseStorage>.internal(
+  storage,
+  name: r'storageProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$storageHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef StorageRef = ProviderRef<FirebaseStorage>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

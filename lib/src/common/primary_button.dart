@@ -11,7 +11,7 @@ class PrimaryButton extends StatelessWidget {
   const PrimaryButton(
       {super.key,
       this.width = double.infinity,
-      this.height = Sizes.p24,
+      this.height = Sizes.p48,
       required this.text,
       this.isLoading = false,
       this.onPressed});
