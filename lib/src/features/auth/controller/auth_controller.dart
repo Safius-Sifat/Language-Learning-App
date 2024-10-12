@@ -20,6 +20,21 @@ class SignInWithGoogle extends _$SignInWithGoogle {
 }
 
 @riverpod
+class ResetPassword extends _$ResetPassword {
+  @override
+  FutureOr<void> build() async {
+    return;
+  }
+
+  Future<bool> resetPassword() async {
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(
+        () => ref.read(authRepositoryProvider).sendPasswordResetEmail());
+    return state.hasValue;
+  }
+}
+
+@riverpod
 class EmailPasswordSignIn extends _$EmailPasswordSignIn {
   @override
   FutureOr<void> build() async {

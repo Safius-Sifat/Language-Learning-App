@@ -8,9 +8,9 @@ import '../data/pronunciation_repository.dart';
 import 'audio_player_controller.dart';
 
 class AudioPlayer extends ConsumerStatefulWidget {
-  const AudioPlayer({super.key, required this.fromAsset, this.downloadUrl});
+  const AudioPlayer({super.key, required this.fromNetwork, this.downloadUrl});
 
-  final bool fromAsset;
+  final bool fromNetwork;
   final String? downloadUrl;
 
   @override
@@ -36,14 +36,15 @@ class _AudioPlayerState extends ConsumerState<AudioPlayer> {
   Widget build(BuildContext context) {
     final duration = ref.watch(getAudioDurationProvider(_playerController));
     final playerState = ref.watch(playerStateProvider(_playerController));
-    final downloadPercentage = ref.watch(downloadPercentageProvider);
+    final downloadPercentage =
+        ref.watch(downloadPercentageProvider(widget.downloadUrl ?? ''));
 
     ref.listen<AsyncValue<dynamic>>(
       audioControllerProvider,
       (_, state) => state.showAlertDialogOnError(context),
     );
     return ref
-        .watch(getAudioFromAssetsProvider(_playerController, widget.fromAsset,
+        .watch(getAudioFromAssetsProvider(_playerController, widget.fromNetwork,
             downloadUrl: widget.downloadUrl))
         .when(
           data: (value) {
@@ -100,7 +101,11 @@ class _AudioPlayerState extends ConsumerState<AudioPlayer> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text('$downloadPercentage / 100 %'),
-              LinearProgressIndicator(value: downloadPercentage / 100),
+              gapH4,
+              LinearProgressIndicator(
+                value: downloadPercentage / 100,
+                borderRadius: BorderRadius.circular(Sizes.p8),
+              ),
               gapH4,
               const Text('loading..'),
             ],

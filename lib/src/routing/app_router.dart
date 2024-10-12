@@ -1,8 +1,10 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:language_learning_app/src/features/auth/screen/profile_screen.dart';
 import 'package:language_learning_app/src/features/class/domain/classroom.dart';
 import 'package:language_learning_app/src/features/class/presentation/all_classrooms/all_classroom_screen.dart';
 import 'package:language_learning_app/src/features/class/presentation/classroom_actions/create_classroom.dart';
+import 'package:language_learning_app/src/features/class/presentation/detail/classroom_people.dart';
 import 'package:language_learning_app/src/features/class/presentation/detail/classroom_posts.dart';
 import 'package:language_learning_app/src/features/class/presentation/detail/participant_screen.dart';
 import 'package:language_learning_app/src/features/pronunciation/presentation/create_challenge/create_pronunciation_screen.dart';
@@ -38,7 +40,8 @@ enum AppRoute {
   selectVideo,
   selectVocabulary,
   learnVocabulary,
-  participants
+  participants,
+  profile,
 }
 
 final _peopleNavigatorKey = GlobalKey<NavigatorState>();
@@ -60,7 +63,7 @@ GoRouter goRouter(GoRouterRef ref) {
           return '/';
         }
       } else {
-        if (path == '/') {
+        if (path == '/' || path == '/profile') {
           return '/signIn';
         }
       }
@@ -101,6 +104,24 @@ GoRouter goRouter(GoRouterRef ref) {
             name: AppRoute.joinClassroom.name,
             pageBuilder: (context, state) => const NoTransitionPage(
               child: JoinClassroomScreen(),
+            ),
+          ),
+
+          GoRoute(
+            path: 'profile',
+            name: AppRoute.profile.name,
+            pageBuilder: (context, state) => const NoTransitionPage(
+              child: ProfileScreen(),
+            ),
+          ),
+
+          GoRoute(
+            path: 'people',
+            name: AppRoute.people.name,
+            pageBuilder: (context, state) => NoTransitionPage(
+              child: ClassroomPeople(
+                classroom: state.extra! as Classroom,
+              ),
             ),
           ),
           GoRoute(
@@ -169,7 +190,6 @@ GoRouter goRouter(GoRouterRef ref) {
                   vocabulary: state.extra! as VocabularyModel),
             ),
           ),
-
           GoRoute(
             path: 'participants',
             name: AppRoute.participants.name,

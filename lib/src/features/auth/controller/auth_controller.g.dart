@@ -22,6 +22,22 @@ final signInWithGoogleProvider =
 );
 
 typedef _$SignInWithGoogle = AutoDisposeAsyncNotifier<void>;
+String _$resetPasswordHash() => r'521510c7bbcf59092bbb800cff7cffa73a5b669d';
+
+/// See also [ResetPassword].
+@ProviderFor(ResetPassword)
+final resetPasswordProvider =
+    AutoDisposeAsyncNotifierProvider<ResetPassword, void>.internal(
+  ResetPassword.new,
+  name: r'resetPasswordProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$resetPasswordHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$ResetPassword = AutoDisposeAsyncNotifier<void>;
 String _$emailPasswordSignInHash() =>
     r'bfe47e7afa343363a5d0e5a05d977de57a654d3c';
 

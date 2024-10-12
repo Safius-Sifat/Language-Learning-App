@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:language_learning_app/src/constants/app_sizes.dart';
 import 'package:language_learning_app/src/constants/constants.dart';
 
+import '../../../pronunciation/presentation/audio_player.dart';
 import '../../../vocabulary/domain/vocabulary_model.dart';
 
 class ParticipantScreen extends ConsumerWidget {
@@ -18,7 +19,7 @@ class ParticipantScreen extends ConsumerWidget {
         title: const Text('Participants'),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        padding: const EdgeInsets.all(12.0),
         child: participants.isEmpty
             ? Column(
                 children: [
@@ -39,16 +40,50 @@ class ParticipantScreen extends ConsumerWidget {
               )
             : ListView.separated(
                 itemBuilder: (context, index) {
-                  return ListTile(
-                    leading: Initicon(
-                      text:
-                          participants[index].name ?? participants[index].email,
+                  if (participants[index].audioUrl == null) {
+                    return ListTile(
+                      leading: Initicon(
+                        text: participants[index].name ??
+                            participants[index].email,
+                        size: 32,
+                      ),
+                      title: Text(participants[index].name ??
+                          participants[index]
+                              .email), //   shape: RoundedRectangleBorder(
+                    );
+                  }
+
+                  return Container(
+                    padding: const EdgeInsets.all(Sizes.p12),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(Sizes.p12),
+                      border: Border.all(
+                        color: Colors.grey.shade300,
+                      ),
                     ),
-                    title: Text(
-                        participants[index].name ?? participants[index].email,
-                        style: Theme.of(context).textTheme.titleMedium),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Initicon(
+                              text: participants[index].name ??
+                                  participants[index].email,
+                              size: 32,
+                            ),
+                            gapW8,
+                            Text(
+                                participants[index].name ??
+                                    participants[index].email,
+                                style: Theme.of(context).textTheme.titleMedium),
+                          ],
+                        ),
+                        gapH12,
+                        AudioPlayer(
+                            fromNetwork: true,
+                            downloadUrl: participants[index].audioUrl!)
+                      ],
                     ),
                   );
                 },

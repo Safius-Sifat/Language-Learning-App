@@ -4,10 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../constants/app_sizes.dart';
 import '../../../utils/async_value_ui.dart';
-import '../data/pronunciation_repository.dart';
 import '../data/recorder_repository.dart';
 import 'audio_player.dart';
-import 'audio_player_controller.dart';
 import 'audio_recorder_controller.dart';
 
 class AudioRecorder extends ConsumerStatefulWidget {
@@ -107,7 +105,7 @@ class _AudioRecorderState extends ConsumerState<AudioRecorder> {
                     const Padding(
                       padding: EdgeInsets.symmetric(horizontal: Sizes.p16),
                       child: AudioPlayer(
-                        fromAsset: false,
+                        fromNetwork: false,
                       ),
                     ),
                     gapH24,

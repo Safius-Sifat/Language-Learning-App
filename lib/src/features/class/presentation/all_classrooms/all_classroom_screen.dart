@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_initicon/flutter_initicon.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
@@ -20,16 +21,28 @@ class AllClassroomScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final classrooms = ref.watch(classroomsProvider);
+    final user = ref.watch(authRepositoryProvider).currentUser;
     return Scaffold(
         appBar: AppBar(
           title: const Text('Classrooms'),
           actions: [
-            IconButton(
-              icon: const Icon(Icons.login_outlined),
-              onPressed: () async {
-                await ref.read(authRepositoryProvider).logOut();
-              },
-            )
+            if (user != null && user.photoURL != null)
+              InkWell(
+                onTap: () => context.goNamed(AppRoute.profile.name),
+                child: CircleAvatar(
+                  radius: 16,
+                  backgroundImage: NetworkImage(user.photoURL!),
+                ),
+              ),
+            if (user == null || user.photoURL == null)
+              InkWell(
+                onTap: () => context.goNamed(AppRoute.profile.name),
+                child: Initicon(
+                    text: user?.displayName ?? user?.email ?? "",
+                    // backgroundColor: Colors.blue,
+                    size: 32.0),
+              ),
+            gapW12,
           ],
         ),
         floatingActionButton: FloatingActionButton(

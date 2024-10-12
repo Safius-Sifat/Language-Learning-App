@@ -82,3 +82,20 @@ class JoinClassroom extends _$JoinClassroom {
     return !state.hasError;
   }
 }
+
+@riverpod
+class DeletePost extends _$DeletePost {
+  @override
+  FutureOr<void> build() async {
+    return;
+  }
+
+  Future<bool> deletePost(String postId) async {
+    final repo = ref.read(classroomRepositoryProvider);
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async {
+      return repo.deletePost(postId);
+    });
+    return !state.hasError;
+  }
+}

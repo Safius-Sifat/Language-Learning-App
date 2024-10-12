@@ -21,6 +21,9 @@ class ClassroomRepository {
   CollectionReference get _classroom =>
       _firestore.collection(FirebaseConstants.classroomsCollection);
 
+  CollectionReference get _post =>
+      _firestore.collection(FirebaseConstants.postCollection);
+
   Future<List<Classroom>> fetchClassrooms(String id) async {
     final teacher = await _classroom.where('teacherId', isEqualTo: id).get();
     final student = await _classroom.where('students', arrayContains: id).get();
@@ -55,6 +58,11 @@ class ClassroomRepository {
     return response.id;
   }
 
+  Future<void> deletePost(String postId) async {
+    await _post.doc(postId).delete();
+    return;
+  }
+
   Stream<List<Object>> fetchAssignments(String classroomId) {
     final postsResponse = _firestore
         .collection(FirebaseConstants.postCollection)
@@ -83,14 +91,12 @@ class ClassroomRepository {
       throw ClassroomNotFoundException();
     }
     final classroom = Classroom.fromDocument(result.docs.first);
-    print(classroom);
     if (classroom.students.contains(id)) {
       throw AlreadyMemberException();
     }
     if (classroom.teacherId == id) {
       throw CreatorClassroomException();
     }
-    print('No exception found');
     if (classroom.code == code) {
       await _classroom.doc(classroom.id).update({
         'students': FieldValue.arrayUnion([id])

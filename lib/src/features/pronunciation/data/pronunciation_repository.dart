@@ -23,9 +23,8 @@ class PronunciationRepository {
 
     await _dio.download(downloadUrl!, path,
         onReceiveProgress: (received, total) {
-      print('received: $received, total: $total');
       ref
-          .read(downloadPercentageProvider.notifier)
+          .read(downloadPercentageProvider(downloadUrl).notifier)
           .update(received / total * 100);
     });
 
@@ -53,7 +52,8 @@ class PronunciationRepository {
   }
 
   Future<int> getDuration(PlayerController controller) async {
-    final value = await controller.getDuration(DurationType.current);
+    final value = await controller.getDuration();
+    print('Duration: $value');
     return value;
   }
 
@@ -112,7 +112,7 @@ Dio dio(DioRef ref) {
 @riverpod
 class DownloadPercentage extends _$DownloadPercentage {
   @override
-  double build() {
+  double build(String downloadUrl) {
     return 0.0;
   }
 

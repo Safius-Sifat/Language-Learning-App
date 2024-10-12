@@ -1,8 +1,11 @@
+import 'package:collection/collection.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:language_learning_app/src/common/overlay_loader.dart';
 import 'package:language_learning_app/src/constants/app_sizes.dart';
+import 'package:language_learning_app/src/features/auth/repository/auth_repository.dart';
 import 'package:language_learning_app/src/utils/async_value_ui.dart';
 import 'package:language_learning_app/src/utils/toastification.dart';
 
@@ -16,6 +19,10 @@ class LearnVocabularyScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    User? user = ref.read(authRepositoryProvider).currentUser;
+
+    Participant? me = vocabulary.participants
+        .firstWhereOrNull((people) => people.id == user!.uid);
     ref.listen<AsyncValue<dynamic>>(
       vocabularyMarkCompleteProvider,
       (_, state) => state.showAlertDialogOnError(context),
@@ -25,17 +32,19 @@ class LearnVocabularyScreen extends ConsumerWidget {
         title: Text(vocabulary.name),
         actions: [
           ElevatedButton(
-              onPressed: () async {
-                showOverlayLoader(context);
-                final success = await ref
-                    .read(vocabularyMarkCompleteProvider.notifier)
-                    .markVocabularyComplete(postId: vocabulary.id!);
-                context.pop();
+              onPressed: me != null
+                  ? null
+                  : () async {
+                      showOverlayLoader(context);
+                      final success = await ref
+                          .read(vocabularyMarkCompleteProvider.notifier)
+                          .markVocabularyComplete(postId: vocabulary.id!);
+                      context.pop();
 
-                if (success) {
-                  successToast(ctx: context, title: 'Marked as complete');
-                }
-              },
+                      if (success) {
+                        successToast(ctx: context, title: 'Marked as complete');
+                      }
+                    },
               child: const Text('Done')),
           gapW12,
         ],

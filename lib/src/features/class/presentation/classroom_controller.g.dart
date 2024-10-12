@@ -38,7 +38,7 @@ final deleteClassroomProvider =
 );
 
 typedef _$DeleteClassroom = AutoDisposeAsyncNotifier<void>;
-String _$leaveClassroomHash() => r'0aad5cdadf02793d7a0f39280295a2f9a8fc1127';
+String _$leaveClassroomHash() => r'7c7eb0ce5450035fde1c9bdbce1e029c8dcb082b';
 
 /// See also [LeaveClassroom].
 @ProviderFor(LeaveClassroom)
@@ -54,7 +54,7 @@ final leaveClassroomProvider =
 );
 
 typedef _$LeaveClassroom = AutoDisposeAsyncNotifier<void>;
-String _$joinClassroomHash() => r'dc7ae189f19d94a74a8948adcc86f07780f099b8';
+String _$joinClassroomHash() => r'30ccce1552d803659e2f40c86a1f9e81977d7966';
 
 /// See also [JoinClassroom].
 @ProviderFor(JoinClassroom)
@@ -70,5 +70,20 @@ final joinClassroomProvider =
 );
 
 typedef _$JoinClassroom = AutoDisposeAsyncNotifier<void>;
+String _$deletePostHash() => r'b797d5373eb2f22b504b765d89eb176f96ce61c9';
+
+/// See also [DeletePost].
+@ProviderFor(DeletePost)
+final deletePostProvider =
+    AutoDisposeAsyncNotifierProvider<DeletePost, void>.internal(
+  DeletePost.new,
+  name: r'deletePostProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$deletePostHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$DeletePost = AutoDisposeAsyncNotifier<void>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

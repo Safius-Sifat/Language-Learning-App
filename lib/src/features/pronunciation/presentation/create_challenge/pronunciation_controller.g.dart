@@ -23,5 +23,22 @@ final createPronunciationChallengeProvider = AutoDisposeAsyncNotifierProvider<
 );
 
 typedef _$CreatePronunciationChallenge = AutoDisposeAsyncNotifier<void>;
+String _$markPronunciationCompleteHash() =>
+    r'2b26d4ae114a68d9ba8cd9b164c1e1baee7881cf';
+
+/// See also [MarkPronunciationComplete].
+@ProviderFor(MarkPronunciationComplete)
+final markPronunciationCompleteProvider =
+    AutoDisposeAsyncNotifierProvider<MarkPronunciationComplete, void>.internal(
+  MarkPronunciationComplete.new,
+  name: r'markPronunciationCompleteProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$markPronunciationCompleteHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$MarkPronunciationComplete = AutoDisposeAsyncNotifier<void>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

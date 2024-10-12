@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:language_learning_app/src/features/pronunciation/domain/pronunciation_model.dart';
+import 'package:language_learning_app/src/features/vocabulary/domain/vocabulary_model.dart';
 import 'package:language_learning_app/src/utils/firebase_providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:language_learning_app/src/constants/firebase_constants.dart';
@@ -49,6 +51,25 @@ class UploadRepository {
     await _firestore
         .collection(FirebaseConstants.postCollection)
         .add(pronunciationModel.toDocument());
+  }
+
+  Future<void> markPronunciationComplete(
+      {required User user,
+      required String postId,
+      required String filePath}) async {
+    final audioUrl = await uploadFileToFirebase(File(filePath));
+    final participant = Participant(
+      id: user.uid,
+      email: user.email!,
+      name: user.displayName,
+      audioUrl: audioUrl,
+    );
+    return _firestore
+        .collection(FirebaseConstants.postCollection)
+        .doc(postId)
+        .update({
+      'participants': FieldValue.arrayUnion([participant.toJson()])
+    });
   }
 }
 

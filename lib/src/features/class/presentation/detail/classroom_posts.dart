@@ -10,6 +10,7 @@ import 'package:language_learning_app/src/constants/app_sizes.dart';
 import 'package:language_learning_app/src/features/auth/repository/auth_repository.dart';
 import 'package:language_learning_app/src/features/class/data/classroom_repository.dart';
 import 'package:language_learning_app/src/features/class/domain/classroom.dart';
+import 'package:language_learning_app/src/features/class/presentation/classroom_controller.dart';
 import 'package:language_learning_app/src/features/pronunciation/domain/pronunciation_model.dart';
 import 'package:language_learning_app/src/features/video/domain/video.dart';
 import 'package:language_learning_app/src/features/video/presentation/video_widget.dart';
@@ -29,7 +30,17 @@ class ClassroomPosts extends ConsumerWidget {
     final user = ref.watch(authRepositoryProvider).currentUser;
     final posts = ref.watch(classroomPostsProvider(classroom.id!));
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () {
+              context.pushNamed(AppRoute.people.name, extra: classroom);
+            },
+            icon: const Icon(Icons.people),
+          ),
+          gapH12,
+        ],
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(12.0),
@@ -138,7 +149,11 @@ class ClassroomPosts extends ConsumerWidget {
                         gapH80,
                         SizedBox(height: 200, child: SvgPicture.asset(kNoPost)),
                         gapH20,
-                        Text('This is where you can talk to your class',
+                        Text(
+                            classroom.teacherId == user.uid
+                                ? 'This is where you can talk to your class'
+                                : 'This is where you will get your study materials',
+                            textAlign: TextAlign.center,
                             style: Theme.of(context).textTheme.titleMedium),
                       ],
                     );
@@ -168,7 +183,7 @@ class ClassroomPosts extends ConsumerWidget {
                               },
                               child: Container(
                                 padding: const EdgeInsets.all(16),
-                                height: 130,
+                                height: 140,
                                 width: double.infinity,
                                 decoration: BoxDecoration(
                                   borderRadius:
@@ -180,13 +195,36 @@ class ClassroomPosts extends ConsumerWidget {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(post.name,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleMedium!
-                                            .copyWith(
-                                                fontSize: 17,
-                                                fontWeight: FontWeight.w900)),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(post.name,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleMedium!
+                                                .copyWith(
+                                                    fontSize: 17,
+                                                    fontWeight:
+                                                        FontWeight.w900)),
+                                        if (user.uid == classroom.teacherId)
+                                          PopupMenuButton(
+                                            itemBuilder: (context) {
+                                              return [
+                                                PopupMenuItem(
+                                                  child: const Text('Delete'),
+                                                  onTap: () async {
+                                                    await ref
+                                                        .read(deletePostProvider
+                                                            .notifier)
+                                                        .deletePost(post.id!);
+                                                  },
+                                                ),
+                                              ];
+                                            },
+                                          ),
+                                      ],
+                                    ),
                                     gapH8,
                                     Container(
                                       padding: const EdgeInsets.symmetric(
@@ -229,19 +267,19 @@ class ClassroomPosts extends ConsumerWidget {
                             child: InkWell(
                               borderRadius: BorderRadius.circular(Sizes.p12),
                               onTap: () {
-                                // if (classroom.teacherId == user.uid) {
-                                //   context.pushNamed(AppRoute.participants.name,
-                                //       extra: post.participants);
-                                // } else {
-                                context.pushNamed(
-                                  AppRoute.recordPronunciation.name,
-                                  extra: post,
-                                );
-                                // }
+                                if (classroom.teacherId == user.uid) {
+                                  context.pushNamed(AppRoute.participants.name,
+                                      extra: post.participants);
+                                } else {
+                                  context.pushNamed(
+                                    AppRoute.recordPronunciation.name,
+                                    extra: post,
+                                  );
+                                }
                               },
                               child: Container(
                                 padding: const EdgeInsets.all(16),
-                                height: 130,
+                                height: 140,
                                 width: double.infinity,
                                 decoration: BoxDecoration(
                                   borderRadius:
@@ -253,13 +291,36 @@ class ClassroomPosts extends ConsumerWidget {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(post.name,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleMedium!
-                                            .copyWith(
-                                                fontSize: 17,
-                                                fontWeight: FontWeight.w900)),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(post.name,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleMedium!
+                                                .copyWith(
+                                                    fontSize: 17,
+                                                    fontWeight:
+                                                        FontWeight.w900)),
+                                        if (user.uid == classroom.teacherId)
+                                          PopupMenuButton(
+                                            itemBuilder: (context) {
+                                              return [
+                                                PopupMenuItem(
+                                                  child: const Text('Delete'),
+                                                  onTap: () async {
+                                                    await ref
+                                                        .read(deletePostProvider
+                                                            .notifier)
+                                                        .deletePost(post.id!);
+                                                  },
+                                                ),
+                                              ];
+                                            },
+                                          ),
+                                      ],
+                                    ),
                                     gapH8,
                                     Container(
                                       padding: const EdgeInsets.symmetric(
@@ -427,7 +488,7 @@ Future<void> showSelectChallenge(BuildContext context, String classroomId) {
               title: const Text('Vocabulary'),
               onTap: () {
                 Navigator.pop(context);
-                context.goNamed(AppRoute.selectVocabulary.name,
+                context.pushNamed(AppRoute.selectVocabulary.name,
                     pathParameters: {'classroomId': classroomId});
               },
             ),

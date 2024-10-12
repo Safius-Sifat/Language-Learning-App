@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:language_learning_app/src/exception/app_exception.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../constants/firebase_constants.dart';
@@ -69,7 +70,7 @@ class AuthRepository {
         email: userCredential.user!.email!,
         photoUrl: userCredential.user?.photoURL,
       );
-      await _user.doc(userCredential.user!.uid).set(userModel.toJson());
+      await _user.doc(userCredential.user?.uid).set(userModel.toDocument());
     } // handle
   }
 
@@ -81,6 +82,27 @@ class AuthRepository {
       email: email,
       password: password,
     );
+  }
+
+  Future<UserModel> getUserById(String id) async {
+    return _user.doc(id).get().then((doc) => UserModel.fromDocument(doc));
+  }
+
+  Future<List<UserModel>> getUsers(List<String> ids) async {
+    final users = await Future.wait(ids.map((id) => getUserById(id)));
+    return users;
+  }
+
+  Future<void> sendPasswordResetEmail() async {
+    if (currentUser == null || currentUser?.email == null) {
+      throw UserNotFoundException;
+    }
+    return _auth.sendPasswordResetEmail(email: currentUser!.email!);
+  }
+
+  Future<void> deleteAccount() async {
+    await _googleSignIn.signOut();
+    await _auth.currentUser?.delete();
   }
 
   Future<void> logOut() async {
@@ -104,4 +126,16 @@ AuthRepository authRepository(AuthRepositoryRef ref) {
 @Riverpod(keepAlive: true)
 Stream<User?> authStateChange(AuthStateChangeRef ref) {
   return ref.watch(authRepositoryProvider).authStateChange;
+}
+
+@riverpod
+FutureOr<UserModel> fetchUserById(FetchUserByIdRef ref,
+    {required String id}) async {
+  return ref.read(authRepositoryProvider).getUserById(id);
+}
+
+@riverpod
+FutureOr<List<UserModel>> fetchUsers(FetchUsersRef ref,
+    {required List<String> ids}) async {
+  return ref.read(authRepositoryProvider).getUsers(ids);
 }

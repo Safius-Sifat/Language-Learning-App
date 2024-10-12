@@ -480,21 +480,149 @@ final dioProvider = AutoDisposeProvider<Dio>.internal(
 
 typedef DioRef = AutoDisposeProviderRef<Dio>;
 String _$downloadPercentageHash() =>
-    r'6f0ea1522956db1798113098edb5098ed3274373';
+    r'9fe7eb5bc10c2d6c347fbe95ee2694150ac572ec';
+
+abstract class _$DownloadPercentage
+    extends BuildlessAutoDisposeNotifier<double> {
+  late final String downloadUrl;
+
+  double build(
+    String downloadUrl,
+  );
+}
 
 /// See also [DownloadPercentage].
 @ProviderFor(DownloadPercentage)
-final downloadPercentageProvider =
-    AutoDisposeNotifierProvider<DownloadPercentage, double>.internal(
-  DownloadPercentage.new,
-  name: r'downloadPercentageProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$downloadPercentageHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+const downloadPercentageProvider = DownloadPercentageFamily();
 
-typedef _$DownloadPercentage = AutoDisposeNotifier<double>;
+/// See also [DownloadPercentage].
+class DownloadPercentageFamily extends Family<double> {
+  /// See also [DownloadPercentage].
+  const DownloadPercentageFamily();
+
+  /// See also [DownloadPercentage].
+  DownloadPercentageProvider call(
+    String downloadUrl,
+  ) {
+    return DownloadPercentageProvider(
+      downloadUrl,
+    );
+  }
+
+  @override
+  DownloadPercentageProvider getProviderOverride(
+    covariant DownloadPercentageProvider provider,
+  ) {
+    return call(
+      provider.downloadUrl,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'downloadPercentageProvider';
+}
+
+/// See also [DownloadPercentage].
+class DownloadPercentageProvider
+    extends AutoDisposeNotifierProviderImpl<DownloadPercentage, double> {
+  /// See also [DownloadPercentage].
+  DownloadPercentageProvider(
+    String downloadUrl,
+  ) : this._internal(
+          () => DownloadPercentage()..downloadUrl = downloadUrl,
+          from: downloadPercentageProvider,
+          name: r'downloadPercentageProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$downloadPercentageHash,
+          dependencies: DownloadPercentageFamily._dependencies,
+          allTransitiveDependencies:
+              DownloadPercentageFamily._allTransitiveDependencies,
+          downloadUrl: downloadUrl,
+        );
+
+  DownloadPercentageProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.downloadUrl,
+  }) : super.internal();
+
+  final String downloadUrl;
+
+  @override
+  double runNotifierBuild(
+    covariant DownloadPercentage notifier,
+  ) {
+    return notifier.build(
+      downloadUrl,
+    );
+  }
+
+  @override
+  Override overrideWith(DownloadPercentage Function() create) {
+    return ProviderOverride(
+      origin: this,
+      override: DownloadPercentageProvider._internal(
+        () => create()..downloadUrl = downloadUrl,
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        downloadUrl: downloadUrl,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeNotifierProviderElement<DownloadPercentage, double>
+      createElement() {
+    return _DownloadPercentageProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is DownloadPercentageProvider &&
+        other.downloadUrl == downloadUrl;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, downloadUrl.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin DownloadPercentageRef on AutoDisposeNotifierProviderRef<double> {
+  /// The parameter `downloadUrl` of this provider.
+  String get downloadUrl;
+}
+
+class _DownloadPercentageProviderElement
+    extends AutoDisposeNotifierProviderElement<DownloadPercentage, double>
+    with DownloadPercentageRef {
+  _DownloadPercentageProviderElement(super.provider);
+
+  @override
+  String get downloadUrl => (origin as DownloadPercentageProvider).downloadUrl;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
