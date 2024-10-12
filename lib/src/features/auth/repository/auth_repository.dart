@@ -50,6 +50,9 @@ class AuthRepository {
         name: userCredential.user?.displayName,
         email: userCredential.user?.email ?? '',
         photoUrl: userCredential.user?.photoURL,
+        createdAt: DateTime.now(),
+        lastActive: DateTime.now(),
+        isOnline: true,
       );
       await _user.doc(userCredential.user?.uid).set(userModel.toDocument());
     } // handle
@@ -69,6 +72,9 @@ class AuthRepository {
         name: userCredential.user?.displayName,
         email: userCredential.user!.email!,
         photoUrl: userCredential.user?.photoURL,
+        createdAt: DateTime.now(),
+        lastActive: DateTime.now(),
+        isOnline: true,
       );
       await _user.doc(userCredential.user?.uid).set(userModel.toDocument());
     } // handle

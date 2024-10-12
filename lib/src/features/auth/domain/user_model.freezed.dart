@@ -24,6 +24,9 @@ mixin _$UserModel {
   String get email => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
   String? get photoUrl => throw _privateConstructorUsedError;
+  DateTime get createdAt => throw _privateConstructorUsedError;
+  DateTime get lastActive => throw _privateConstructorUsedError;
+  bool get isOnline => throw _privateConstructorUsedError;
 
   /// Serializes this UserModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -40,7 +43,14 @@ abstract class $UserModelCopyWith<$Res> {
   factory $UserModelCopyWith(UserModel value, $Res Function(UserModel) then) =
       _$UserModelCopyWithImpl<$Res, UserModel>;
   @useResult
-  $Res call({String? id, String email, String? name, String? photoUrl});
+  $Res call(
+      {String? id,
+      String email,
+      String? name,
+      String? photoUrl,
+      DateTime createdAt,
+      DateTime lastActive,
+      bool isOnline});
 }
 
 /// @nodoc
@@ -62,6 +72,9 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
     Object? email = null,
     Object? name = freezed,
     Object? photoUrl = freezed,
+    Object? createdAt = null,
+    Object? lastActive = null,
+    Object? isOnline = null,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -80,6 +93,18 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
           ? _value.photoUrl
           : photoUrl // ignore: cast_nullable_to_non_nullable
               as String?,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      lastActive: null == lastActive
+          ? _value.lastActive
+          : lastActive // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      isOnline: null == isOnline
+          ? _value.isOnline
+          : isOnline // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -92,7 +117,14 @@ abstract class _$$UserModelImplCopyWith<$Res>
       __$$UserModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? id, String email, String? name, String? photoUrl});
+  $Res call(
+      {String? id,
+      String email,
+      String? name,
+      String? photoUrl,
+      DateTime createdAt,
+      DateTime lastActive,
+      bool isOnline});
 }
 
 /// @nodoc
@@ -112,6 +144,9 @@ class __$$UserModelImplCopyWithImpl<$Res>
     Object? email = null,
     Object? name = freezed,
     Object? photoUrl = freezed,
+    Object? createdAt = null,
+    Object? lastActive = null,
+    Object? isOnline = null,
   }) {
     return _then(_$UserModelImpl(
       id: freezed == id
@@ -130,6 +165,18 @@ class __$$UserModelImplCopyWithImpl<$Res>
           ? _value.photoUrl
           : photoUrl // ignore: cast_nullable_to_non_nullable
               as String?,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      lastActive: null == lastActive
+          ? _value.lastActive
+          : lastActive // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      isOnline: null == isOnline
+          ? _value.isOnline
+          : isOnline // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -138,7 +185,13 @@ class __$$UserModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$UserModelImpl extends _UserModel {
   const _$UserModelImpl(
-      {this.id, required this.email, this.name, this.photoUrl})
+      {this.id,
+      required this.email,
+      this.name,
+      this.photoUrl,
+      required this.createdAt,
+      required this.lastActive,
+      required this.isOnline})
       : super._();
 
   factory _$UserModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -152,10 +205,16 @@ class _$UserModelImpl extends _UserModel {
   final String? name;
   @override
   final String? photoUrl;
+  @override
+  final DateTime createdAt;
+  @override
+  final DateTime lastActive;
+  @override
+  final bool isOnline;
 
   @override
   String toString() {
-    return 'UserModel(id: $id, email: $email, name: $name, photoUrl: $photoUrl)';
+    return 'UserModel(id: $id, email: $email, name: $name, photoUrl: $photoUrl, createdAt: $createdAt, lastActive: $lastActive, isOnline: $isOnline)';
   }
 
   @override
@@ -167,12 +226,19 @@ class _$UserModelImpl extends _UserModel {
             (identical(other.email, email) || other.email == email) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.photoUrl, photoUrl) ||
-                other.photoUrl == photoUrl));
+                other.photoUrl == photoUrl) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.lastActive, lastActive) ||
+                other.lastActive == lastActive) &&
+            (identical(other.isOnline, isOnline) ||
+                other.isOnline == isOnline));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, email, name, photoUrl);
+  int get hashCode => Object.hash(
+      runtimeType, id, email, name, photoUrl, createdAt, lastActive, isOnline);
 
   /// Create a copy of UserModel
   /// with the given fields replaced by the non-null parameter values.
@@ -195,7 +261,10 @@ abstract class _UserModel extends UserModel {
       {final String? id,
       required final String email,
       final String? name,
-      final String? photoUrl}) = _$UserModelImpl;
+      final String? photoUrl,
+      required final DateTime createdAt,
+      required final DateTime lastActive,
+      required final bool isOnline}) = _$UserModelImpl;
   const _UserModel._() : super._();
 
   factory _UserModel.fromJson(Map<String, dynamic> json) =
@@ -209,6 +278,12 @@ abstract class _UserModel extends UserModel {
   String? get name;
   @override
   String? get photoUrl;
+  @override
+  DateTime get createdAt;
+  @override
+  DateTime get lastActive;
+  @override
+  bool get isOnline;
 
   /// Create a copy of UserModel
   /// with the given fields replaced by the non-null parameter values.

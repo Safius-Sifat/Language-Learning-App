@@ -1,9 +1,9 @@
 import 'package:language_learning_app/src/features/auth/repository/auth_repository.dart';
+import 'package:language_learning_app/src/features/class/data/classroom_repository.dart';
 import 'package:language_learning_app/src/features/class/domain/classroom.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../exception/app_exception.dart';
-import '../data/classroom_repository.dart';
 
 part 'classroom_controller.g.dart';
 
@@ -97,5 +97,17 @@ class DeletePost extends _$DeletePost {
       return repo.deletePost(postId);
     });
     return !state.hasError;
+  }
+}
+
+@Riverpod(keepAlive: true)
+class CurrentClassroom extends _$CurrentClassroom {
+  @override
+  Classroom build() {
+    return Classroom.empty();
+  }
+
+  void update(Classroom classroom) async {
+    state = classroom;
   }
 }

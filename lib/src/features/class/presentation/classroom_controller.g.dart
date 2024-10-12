@@ -85,5 +85,21 @@ final deletePostProvider =
 );
 
 typedef _$DeletePost = AutoDisposeAsyncNotifier<void>;
+String _$currentClassroomHash() => r'3a44291491ab98671f14e70ec96204d4bbd71d6b';
+
+/// See also [CurrentClassroom].
+@ProviderFor(CurrentClassroom)
+final currentClassroomProvider =
+    NotifierProvider<CurrentClassroom, Classroom>.internal(
+  CurrentClassroom.new,
+  name: r'currentClassroomProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$currentClassroomHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$CurrentClassroom = Notifier<Classroom>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

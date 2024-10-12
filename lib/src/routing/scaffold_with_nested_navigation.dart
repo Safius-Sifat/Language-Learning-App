@@ -61,14 +61,14 @@ class ScaffoldWithNavigationBar extends StatelessWidget {
         destinations: const [
           // products
           NavigationDestination(
-            icon: Icon(Icons.message_outlined),
-            selectedIcon: Icon(Icons.message_rounded),
+            icon: Icon(Icons.stream_outlined),
+            selectedIcon: Icon(Icons.stream_rounded),
             label: 'Posts',
           ),
           NavigationDestination(
-            icon: Icon(Icons.people_outline),
-            selectedIcon: Icon(Icons.people_rounded),
-            label: 'People',
+            icon: Icon(Icons.message_outlined),
+            selectedIcon: Icon(Icons.message_rounded),
+            label: 'Chat',
           ),
         ],
         onDestinationSelected: onDestinationSelected,

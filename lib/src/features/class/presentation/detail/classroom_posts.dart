@@ -9,7 +9,6 @@ import 'package:language_learning_app/src/app.dart';
 import 'package:language_learning_app/src/constants/app_sizes.dart';
 import 'package:language_learning_app/src/features/auth/repository/auth_repository.dart';
 import 'package:language_learning_app/src/features/class/data/classroom_repository.dart';
-import 'package:language_learning_app/src/features/class/domain/classroom.dart';
 import 'package:language_learning_app/src/features/class/presentation/classroom_controller.dart';
 import 'package:language_learning_app/src/features/pronunciation/domain/pronunciation_model.dart';
 import 'package:language_learning_app/src/features/video/domain/video.dart';
@@ -22,15 +21,21 @@ import '../../../../constants/constants.dart';
 import '../../../../routing/app_router.dart';
 
 class ClassroomPosts extends ConsumerWidget {
-  const ClassroomPosts({super.key, required this.classroom});
-  final Classroom classroom;
+  const ClassroomPosts({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(authRepositoryProvider).currentUser;
+    final classroom = ref.watch(currentClassroomProvider);
     final posts = ref.watch(classroomPostsProvider(classroom.id!));
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            context.pop();
+          },
+          icon: const Icon(Icons.arrow_back),
+        ),
         actions: [
           IconButton(
             onPressed: () {

@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:language_learning_app/src/features/auth/screen/profile_screen.dart';
+import 'package:language_learning_app/src/features/chat/presentation/chat_screen.dart';
 import 'package:language_learning_app/src/features/class/domain/classroom.dart';
 import 'package:language_learning_app/src/features/class/presentation/all_classrooms/all_classroom_screen.dart';
 import 'package:language_learning_app/src/features/class/presentation/classroom_actions/create_classroom.dart';
@@ -13,6 +14,7 @@ import 'package:language_learning_app/src/features/pronunciation/presentation/pr
 import 'package:language_learning_app/src/features/video/presentation/video_selection_screen.dart';
 import 'package:language_learning_app/src/features/vocabulary/presentation/learn_vocabulary_screen.dart';
 import 'package:language_learning_app/src/features/vocabulary/presentation/select_vocabulary_screen.dart';
+import 'package:language_learning_app/src/routing/scaffold_with_nested_navigation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../features/auth/repository/auth_repository.dart';
@@ -42,9 +44,10 @@ enum AppRoute {
   learnVocabulary,
   participants,
   profile,
+  chat,
 }
 
-final _peopleNavigatorKey = GlobalKey<NavigatorState>();
+final _chatNavigatorKey = GlobalKey<NavigatorState>();
 
 final _postsNavigatorKey = GlobalKey<NavigatorState>();
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -106,7 +109,6 @@ GoRouter goRouter(GoRouterRef ref) {
               child: JoinClassroomScreen(),
             ),
           ),
-
           GoRoute(
             path: 'profile',
             name: AppRoute.profile.name,
@@ -114,7 +116,6 @@ GoRouter goRouter(GoRouterRef ref) {
               child: ProfileScreen(),
             ),
           ),
-
           GoRoute(
             path: 'people',
             name: AppRoute.people.name,
@@ -124,16 +125,15 @@ GoRouter goRouter(GoRouterRef ref) {
               ),
             ),
           ),
-          GoRoute(
-            path: 'posts',
-            name: AppRoute.posts.name,
-            pageBuilder: (context, state) => NoTransitionPage(
-              child: ClassroomPosts(
-                classroom: state.extra! as Classroom,
-              ),
-            ),
-          ),
-
+          // GoRoute(
+          //   path: 'posts',
+          //   name: AppRoute.posts.name,
+          //   pageBuilder: (context, state) => NoTransitionPage(
+          //     child: ClassroomPosts(
+          //       classroom: state.extra! as Classroom,
+          //     ),
+          //   ),
+          // ),
           GoRoute(
             path: 'createPronunciation/:text/:name/:deadline/:classroomId',
             name: AppRoute.createPronunciation.name,
@@ -199,24 +199,32 @@ GoRouter goRouter(GoRouterRef ref) {
               ),
             ),
           ),
-          // StatefulShellRoute.indexedStack(
-          //   pageBuilder: (context, state, navigationShell) => NoTransitionPage(
-          //     child: ScaffoldWithNestedNavigation(
-          //         navigationShell: navigationShell),
-          //   ),
-          //   branches: [
-          //     StatefulShellBranch(navigatorKey: _postsNavigatorKey, routes: []),
-          //     StatefulShellBranch(navigatorKey: _peopleNavigatorKey, routes: [
-          //       GoRoute(
-          //         path: 'people',
-          //         name: AppRoute.people.name,
-          //         pageBuilder: (context, state) => const NoTransitionPage(
-          //           child: ClassroomPeople(),
-          //         ),
-          //       ),
-          //     ]),
-          //   ],
-          // )
+          StatefulShellRoute.indexedStack(
+            pageBuilder: (context, state, navigationShell) => NoTransitionPage(
+              child: ScaffoldWithNestedNavigation(
+                  navigationShell: navigationShell),
+            ),
+            branches: [
+              StatefulShellBranch(navigatorKey: _postsNavigatorKey, routes: [
+                GoRoute(
+                  path: 'posts',
+                  name: AppRoute.posts.name,
+                  pageBuilder: (context, state) => const NoTransitionPage(
+                    child: ClassroomPosts(),
+                  ),
+                ),
+              ]),
+              StatefulShellBranch(navigatorKey: _chatNavigatorKey, routes: [
+                GoRoute(
+                  path: 'chat',
+                  name: AppRoute.chat.name,
+                  pageBuilder: (context, state) => const NoTransitionPage(
+                    child: ChatScreen(),
+                  ),
+                ),
+              ]),
+            ],
+          )
         ],
       ),
     ],

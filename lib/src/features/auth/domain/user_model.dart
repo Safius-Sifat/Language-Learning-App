@@ -11,15 +11,21 @@ abstract class UserModel implements _$UserModel {
     required String email,
     String? name,
     String? photoUrl,
+    required DateTime createdAt,
+    required DateTime lastActive,
+    required bool isOnline,
   }) = _UserModel;
   const UserModel._();
 
   factory UserModel.fromJson(Map<String, Object?> json) =>
       _$UserModelFromJson(json);
-  factory UserModel.empty() => const UserModel(
+  factory UserModel.empty() => UserModel(
         email: '',
         name: '',
         photoUrl: '',
+        createdAt: DateTime.now(),
+        lastActive: DateTime.now(),
+        isOnline: false,
       );
 
   factory UserModel.fromDocument(DocumentSnapshot doc) {

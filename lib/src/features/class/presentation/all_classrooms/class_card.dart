@@ -29,7 +29,8 @@ class ClassCard extends ConsumerWidget {
     );
     return InkWell(
       onTap: () {
-        context.goNamed(AppRoute.posts.name, extra: classroom);
+        ref.read(currentClassroomProvider.notifier).update(classroom);
+        context.goNamed(AppRoute.posts.name);
       },
       borderRadius: BorderRadius.circular(Sizes.p12),
       splashColor: Colors.white70,
