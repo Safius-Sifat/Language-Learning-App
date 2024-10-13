@@ -24,7 +24,9 @@ mixin _$UserModel {
   String get email => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
   String? get photoUrl => throw _privateConstructorUsedError;
+  @JsonKey(name: 'createdAt', fromJson: _fromJsonTimestamp)
   DateTime get createdAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'lastActive', fromJson: _fromJsonTimestamp)
   DateTime get lastActive => throw _privateConstructorUsedError;
   bool get isOnline => throw _privateConstructorUsedError;
 
@@ -48,7 +50,9 @@ abstract class $UserModelCopyWith<$Res> {
       String email,
       String? name,
       String? photoUrl,
+      @JsonKey(name: 'createdAt', fromJson: _fromJsonTimestamp)
       DateTime createdAt,
+      @JsonKey(name: 'lastActive', fromJson: _fromJsonTimestamp)
       DateTime lastActive,
       bool isOnline});
 }
@@ -122,7 +126,9 @@ abstract class _$$UserModelImplCopyWith<$Res>
       String email,
       String? name,
       String? photoUrl,
+      @JsonKey(name: 'createdAt', fromJson: _fromJsonTimestamp)
       DateTime createdAt,
+      @JsonKey(name: 'lastActive', fromJson: _fromJsonTimestamp)
       DateTime lastActive,
       bool isOnline});
 }
@@ -189,7 +195,9 @@ class _$UserModelImpl extends _UserModel {
       required this.email,
       this.name,
       this.photoUrl,
+      @JsonKey(name: 'createdAt', fromJson: _fromJsonTimestamp)
       required this.createdAt,
+      @JsonKey(name: 'lastActive', fromJson: _fromJsonTimestamp)
       required this.lastActive,
       required this.isOnline})
       : super._();
@@ -206,8 +214,10 @@ class _$UserModelImpl extends _UserModel {
   @override
   final String? photoUrl;
   @override
+  @JsonKey(name: 'createdAt', fromJson: _fromJsonTimestamp)
   final DateTime createdAt;
   @override
+  @JsonKey(name: 'lastActive', fromJson: _fromJsonTimestamp)
   final DateTime lastActive;
   @override
   final bool isOnline;
@@ -262,7 +272,9 @@ abstract class _UserModel extends UserModel {
       required final String email,
       final String? name,
       final String? photoUrl,
+      @JsonKey(name: 'createdAt', fromJson: _fromJsonTimestamp)
       required final DateTime createdAt,
+      @JsonKey(name: 'lastActive', fromJson: _fromJsonTimestamp)
       required final DateTime lastActive,
       required final bool isOnline}) = _$UserModelImpl;
   const _UserModel._() : super._();
@@ -279,8 +291,10 @@ abstract class _UserModel extends UserModel {
   @override
   String? get photoUrl;
   @override
+  @JsonKey(name: 'createdAt', fromJson: _fromJsonTimestamp)
   DateTime get createdAt;
   @override
+  @JsonKey(name: 'lastActive', fromJson: _fromJsonTimestamp)
   DateTime get lastActive;
   @override
   bool get isOnline;

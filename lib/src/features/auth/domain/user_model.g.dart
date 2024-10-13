@@ -12,8 +12,8 @@ _$UserModelImpl _$$UserModelImplFromJson(Map<String, dynamic> json) =>
       email: json['email'] as String,
       name: json['name'] as String?,
       photoUrl: json['photoUrl'] as String?,
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      lastActive: DateTime.parse(json['lastActive'] as String),
+      createdAt: _fromJsonTimestamp(json['createdAt'] as Timestamp),
+      lastActive: _fromJsonTimestamp(json['lastActive'] as Timestamp),
       isOnline: json['isOnline'] as bool,
     );
 

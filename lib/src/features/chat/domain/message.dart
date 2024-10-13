@@ -8,10 +8,12 @@ part 'message.g.dart';
 abstract class Message implements _$Message {
   const factory Message({
     String? id,
+    required String toName,
     required String toId,
     required String msg,
     required String read,
     required String fromId,
+    required String fromName,
     required String sent,
   }) = _Message;
   const Message._();
@@ -19,6 +21,8 @@ abstract class Message implements _$Message {
   factory Message.fromJson(Map<String, Object?> json) =>
       _$MessageFromJson(json);
   factory Message.empty() => const Message(
+        toName: '',
+        fromName: '',
         toId: '',
         msg: '',
         read: '',

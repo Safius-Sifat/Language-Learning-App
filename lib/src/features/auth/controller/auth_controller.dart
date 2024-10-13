@@ -67,3 +67,18 @@ class EmailPasswordSignUp extends _$EmailPasswordSignUp {
     return state.hasValue;
   }
 }
+
+@riverpod
+class UpdateActiveStatus extends _$UpdateActiveStatus {
+  @override
+  FutureOr<void> build() async {
+    return;
+  }
+
+  Future<bool> updateStatus(bool isOnline) async {
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(
+        () => ref.read(authRepositoryProvider).updateActiveStatus(isOnline));
+    return state.hasValue;
+  }
+}

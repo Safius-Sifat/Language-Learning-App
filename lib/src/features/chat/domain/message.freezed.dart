@@ -21,10 +21,12 @@ Message _$MessageFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Message {
   String? get id => throw _privateConstructorUsedError;
+  String get toName => throw _privateConstructorUsedError;
   String get toId => throw _privateConstructorUsedError;
   String get msg => throw _privateConstructorUsedError;
   String get read => throw _privateConstructorUsedError;
   String get fromId => throw _privateConstructorUsedError;
+  String get fromName => throw _privateConstructorUsedError;
   String get sent => throw _privateConstructorUsedError;
 
   /// Serializes this Message to a JSON map.
@@ -43,10 +45,12 @@ abstract class $MessageCopyWith<$Res> {
   @useResult
   $Res call(
       {String? id,
+      String toName,
       String toId,
       String msg,
       String read,
       String fromId,
+      String fromName,
       String sent});
 }
 
@@ -66,10 +70,12 @@ class _$MessageCopyWithImpl<$Res, $Val extends Message>
   @override
   $Res call({
     Object? id = freezed,
+    Object? toName = null,
     Object? toId = null,
     Object? msg = null,
     Object? read = null,
     Object? fromId = null,
+    Object? fromName = null,
     Object? sent = null,
   }) {
     return _then(_value.copyWith(
@@ -77,6 +83,10 @@ class _$MessageCopyWithImpl<$Res, $Val extends Message>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
+      toName: null == toName
+          ? _value.toName
+          : toName // ignore: cast_nullable_to_non_nullable
+              as String,
       toId: null == toId
           ? _value.toId
           : toId // ignore: cast_nullable_to_non_nullable
@@ -92,6 +102,10 @@ class _$MessageCopyWithImpl<$Res, $Val extends Message>
       fromId: null == fromId
           ? _value.fromId
           : fromId // ignore: cast_nullable_to_non_nullable
+              as String,
+      fromName: null == fromName
+          ? _value.fromName
+          : fromName // ignore: cast_nullable_to_non_nullable
               as String,
       sent: null == sent
           ? _value.sent
@@ -110,10 +124,12 @@ abstract class _$$MessageImplCopyWith<$Res> implements $MessageCopyWith<$Res> {
   @useResult
   $Res call(
       {String? id,
+      String toName,
       String toId,
       String msg,
       String read,
       String fromId,
+      String fromName,
       String sent});
 }
 
@@ -131,10 +147,12 @@ class __$$MessageImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
+    Object? toName = null,
     Object? toId = null,
     Object? msg = null,
     Object? read = null,
     Object? fromId = null,
+    Object? fromName = null,
     Object? sent = null,
   }) {
     return _then(_$MessageImpl(
@@ -142,6 +160,10 @@ class __$$MessageImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
+      toName: null == toName
+          ? _value.toName
+          : toName // ignore: cast_nullable_to_non_nullable
+              as String,
       toId: null == toId
           ? _value.toId
           : toId // ignore: cast_nullable_to_non_nullable
@@ -158,6 +180,10 @@ class __$$MessageImplCopyWithImpl<$Res>
           ? _value.fromId
           : fromId // ignore: cast_nullable_to_non_nullable
               as String,
+      fromName: null == fromName
+          ? _value.fromName
+          : fromName // ignore: cast_nullable_to_non_nullable
+              as String,
       sent: null == sent
           ? _value.sent
           : sent // ignore: cast_nullable_to_non_nullable
@@ -171,10 +197,12 @@ class __$$MessageImplCopyWithImpl<$Res>
 class _$MessageImpl extends _Message {
   const _$MessageImpl(
       {this.id,
+      required this.toName,
       required this.toId,
       required this.msg,
       required this.read,
       required this.fromId,
+      required this.fromName,
       required this.sent})
       : super._();
 
@@ -184,6 +212,8 @@ class _$MessageImpl extends _Message {
   @override
   final String? id;
   @override
+  final String toName;
+  @override
   final String toId;
   @override
   final String msg;
@@ -192,11 +222,13 @@ class _$MessageImpl extends _Message {
   @override
   final String fromId;
   @override
+  final String fromName;
+  @override
   final String sent;
 
   @override
   String toString() {
-    return 'Message(id: $id, toId: $toId, msg: $msg, read: $read, fromId: $fromId, sent: $sent)';
+    return 'Message(id: $id, toName: $toName, toId: $toId, msg: $msg, read: $read, fromId: $fromId, fromName: $fromName, sent: $sent)';
   }
 
   @override
@@ -205,17 +237,20 @@ class _$MessageImpl extends _Message {
         (other.runtimeType == runtimeType &&
             other is _$MessageImpl &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.toName, toName) || other.toName == toName) &&
             (identical(other.toId, toId) || other.toId == toId) &&
             (identical(other.msg, msg) || other.msg == msg) &&
             (identical(other.read, read) || other.read == read) &&
             (identical(other.fromId, fromId) || other.fromId == fromId) &&
+            (identical(other.fromName, fromName) ||
+                other.fromName == fromName) &&
             (identical(other.sent, sent) || other.sent == sent));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, toId, msg, read, fromId, sent);
+  int get hashCode => Object.hash(
+      runtimeType, id, toName, toId, msg, read, fromId, fromName, sent);
 
   /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
@@ -236,10 +271,12 @@ class _$MessageImpl extends _Message {
 abstract class _Message extends Message {
   const factory _Message(
       {final String? id,
+      required final String toName,
       required final String toId,
       required final String msg,
       required final String read,
       required final String fromId,
+      required final String fromName,
       required final String sent}) = _$MessageImpl;
   const _Message._() : super._();
 
@@ -248,6 +285,8 @@ abstract class _Message extends Message {
   @override
   String? get id;
   @override
+  String get toName;
+  @override
   String get toId;
   @override
   String get msg;
@@ -255,6 +294,8 @@ abstract class _Message extends Message {
   String get read;
   @override
   String get fromId;
+  @override
+  String get fromName;
   @override
   String get sent;
 

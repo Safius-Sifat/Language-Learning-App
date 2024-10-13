@@ -1,7 +1,10 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:language_learning_app/src/features/auth/domain/user_model.dart';
 import 'package:language_learning_app/src/features/auth/screen/profile_screen.dart';
+import 'package:language_learning_app/src/features/chat/presentation/chat_room.dart';
 import 'package:language_learning_app/src/features/chat/presentation/chat_screen.dart';
+import 'package:language_learning_app/src/features/chat/presentation/group_chat_room.dart';
 import 'package:language_learning_app/src/features/class/domain/classroom.dart';
 import 'package:language_learning_app/src/features/class/presentation/all_classrooms/all_classroom_screen.dart';
 import 'package:language_learning_app/src/features/class/presentation/classroom_actions/create_classroom.dart';
@@ -45,6 +48,8 @@ enum AppRoute {
   participants,
   profile,
   chat,
+  chatRoom,
+  groupChatRoom,
 }
 
 final _chatNavigatorKey = GlobalKey<NavigatorState>();
@@ -216,12 +221,29 @@ GoRouter goRouter(GoRouterRef ref) {
               ]),
               StatefulShellBranch(navigatorKey: _chatNavigatorKey, routes: [
                 GoRoute(
-                  path: 'chat',
-                  name: AppRoute.chat.name,
-                  pageBuilder: (context, state) => const NoTransitionPage(
-                    child: ChatScreen(),
-                  ),
-                ),
+                    path: 'chat',
+                    name: AppRoute.chat.name,
+                    pageBuilder: (context, state) => const NoTransitionPage(
+                          child: ChatScreen(),
+                        ),
+                    routes: [
+                      GoRoute(
+                        path: 'chatRoom',
+                        name: AppRoute.chatRoom.name,
+                        pageBuilder: (context, state) => NoTransitionPage(
+                          child: ChatRoom(
+                            user: state.extra! as UserModel,
+                          ),
+                        ),
+                      ),
+                      GoRoute(
+                        path: 'groupChatRoom',
+                        name: AppRoute.groupChatRoom.name,
+                        pageBuilder: (context, state) => const NoTransitionPage(
+                          child: GroupChatRoom(),
+                        ),
+                      ),
+                    ]),
               ]),
             ],
           )

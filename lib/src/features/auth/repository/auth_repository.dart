@@ -29,6 +29,10 @@ class AuthRepository {
   Stream<User?> get authStateChange => _auth.authStateChanges();
   User? get currentUser => _auth.currentUser;
 
+  Future<bool> userExists() async {
+    return (await _user.doc(currentUser!.uid).get()).exists;
+  }
+
   Future<void> signInUsingGoogle() async {
     final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
     if (googleUser == null) {
@@ -44,7 +48,8 @@ class AuthRepository {
     );
 
     final userCredential = await _auth.signInWithCredential(credential);
-    if (userCredential.additionalUserInfo?.isNewUser ?? true) {
+    if (userCredential.additionalUserInfo?.isNewUser ??
+        false || !(await userExists())) {
       final userModel = UserModel(
         id: userCredential.user?.uid,
         name: userCredential.user?.displayName,
@@ -67,7 +72,8 @@ class AuthRepository {
       password: password,
     );
 
-    if (userCredential.additionalUserInfo?.isNewUser ?? true) {
+    if (userCredential.additionalUserInfo?.isNewUser ??
+        false || !(await userExists())) {
       final userModel = UserModel(
         name: userCredential.user?.displayName,
         email: userCredential.user!.email!,
@@ -84,14 +90,49 @@ class AuthRepository {
     required String email,
     required String password,
   }) async {
-    await _auth.signInWithEmailAndPassword(
+    final userCredential = await _auth.signInWithEmailAndPassword(
       email: email,
       password: password,
     );
+    if (currentUser == null) {
+      throw UserNotFoundException;
+    }
+
+    if (!(await userExists())) {
+      final userModel = UserModel(
+        name: userCredential.user?.displayName,
+        email: userCredential.user!.email!,
+        photoUrl: userCredential.user?.photoURL,
+        createdAt: DateTime.now(),
+        lastActive: DateTime.now(),
+        isOnline: true,
+      );
+      await _user.doc(userCredential.user?.uid).set(userModel.toDocument());
+    }
+  }
+
+  Future<UserModel> getSelfInfo() async {
+    return await _user.doc(currentUser!.uid).get().then((user) async {
+      //for setting user status to active
+      await updateActiveStatus(true);
+      return UserModel.fromDocument(user);
+    });
+  }
+
+  Future<void> updateActiveStatus(bool isOnline) async {
+    _user.doc(currentUser!.uid).update({
+      'is_online': isOnline,
+      'last_active': DateTime.now().millisecondsSinceEpoch.toString(),
+    });
   }
 
   Future<UserModel> getUserById(String id) async {
     return _user.doc(id).get().then((doc) => UserModel.fromDocument(doc));
+  }
+
+  Stream<UserModel> watchUserById(String id) {
+    final response = _user.doc(id).snapshots();
+    return response.map((event) => UserModel.fromDocument(event));
   }
 
   Future<List<UserModel>> getUsers(List<String> ids) async {
@@ -138,6 +179,11 @@ Stream<User?> authStateChange(AuthStateChangeRef ref) {
 FutureOr<UserModel> fetchUserById(FetchUserByIdRef ref,
     {required String id}) async {
   return ref.read(authRepositoryProvider).getUserById(id);
+}
+
+@riverpod
+Stream<UserModel> watchUserById(WatchUserByIdRef ref, {required String id}) {
+  return ref.read(authRepositoryProvider).watchUserById(id);
 }
 
 @riverpod

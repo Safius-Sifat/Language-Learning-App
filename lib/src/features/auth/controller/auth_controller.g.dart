@@ -72,5 +72,22 @@ final emailPasswordSignUpProvider =
 );
 
 typedef _$EmailPasswordSignUp = AutoDisposeAsyncNotifier<void>;
+String _$updateActiveStatusHash() =>
+    r'34a73f1143ac5647282349c4dc662e4c789eefa7';
+
+/// See also [UpdateActiveStatus].
+@ProviderFor(UpdateActiveStatus)
+final updateActiveStatusProvider =
+    AutoDisposeAsyncNotifierProvider<UpdateActiveStatus, void>.internal(
+  UpdateActiveStatus.new,
+  name: r'updateActiveStatusProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$updateActiveStatusHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$UpdateActiveStatus = AutoDisposeAsyncNotifier<void>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -185,6 +185,134 @@ class _FetchUserByIdProviderElement
   String get id => (origin as FetchUserByIdProvider).id;
 }
 
+String _$watchUserByIdHash() => r'c3b7c37b9f1e51adf4e60f6259e91b324d8d6a36';
+
+/// See also [watchUserById].
+@ProviderFor(watchUserById)
+const watchUserByIdProvider = WatchUserByIdFamily();
+
+/// See also [watchUserById].
+class WatchUserByIdFamily extends Family<AsyncValue<UserModel>> {
+  /// See also [watchUserById].
+  const WatchUserByIdFamily();
+
+  /// See also [watchUserById].
+  WatchUserByIdProvider call({
+    required String id,
+  }) {
+    return WatchUserByIdProvider(
+      id: id,
+    );
+  }
+
+  @override
+  WatchUserByIdProvider getProviderOverride(
+    covariant WatchUserByIdProvider provider,
+  ) {
+    return call(
+      id: provider.id,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'watchUserByIdProvider';
+}
+
+/// See also [watchUserById].
+class WatchUserByIdProvider extends AutoDisposeStreamProvider<UserModel> {
+  /// See also [watchUserById].
+  WatchUserByIdProvider({
+    required String id,
+  }) : this._internal(
+          (ref) => watchUserById(
+            ref as WatchUserByIdRef,
+            id: id,
+          ),
+          from: watchUserByIdProvider,
+          name: r'watchUserByIdProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$watchUserByIdHash,
+          dependencies: WatchUserByIdFamily._dependencies,
+          allTransitiveDependencies:
+              WatchUserByIdFamily._allTransitiveDependencies,
+          id: id,
+        );
+
+  WatchUserByIdProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.id,
+  }) : super.internal();
+
+  final String id;
+
+  @override
+  Override overrideWith(
+    Stream<UserModel> Function(WatchUserByIdRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: WatchUserByIdProvider._internal(
+        (ref) => create(ref as WatchUserByIdRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        id: id,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeStreamProviderElement<UserModel> createElement() {
+    return _WatchUserByIdProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is WatchUserByIdProvider && other.id == id;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, id.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin WatchUserByIdRef on AutoDisposeStreamProviderRef<UserModel> {
+  /// The parameter `id` of this provider.
+  String get id;
+}
+
+class _WatchUserByIdProviderElement
+    extends AutoDisposeStreamProviderElement<UserModel> with WatchUserByIdRef {
+  _WatchUserByIdProviderElement(super.provider);
+
+  @override
+  String get id => (origin as WatchUserByIdProvider).id;
+}
+
 String _$fetchUsersHash() => r'73e779258d912bb3117631ab8e27e8844a57939e';
 
 /// See also [fetchUsers].

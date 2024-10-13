@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_initicon/flutter_initicon.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -6,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:language_learning_app/src/common/primary_button.dart';
 import 'package:language_learning_app/src/constants/app_sizes.dart';
 import 'package:language_learning_app/src/constants/constants.dart';
+import 'package:language_learning_app/src/features/auth/controller/auth_controller.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../../../app.dart';
@@ -15,11 +17,38 @@ import '../../data/classroom_repository.dart';
 import '../../domain/classroom.dart';
 import 'class_card.dart';
 
-class AllClassroomScreen extends ConsumerWidget {
+class AllClassroomScreen extends ConsumerStatefulWidget {
   const AllClassroomScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _AllClassroomScreenState();
+}
+
+class _AllClassroomScreenState extends ConsumerState<AllClassroomScreen> {
+  @override
+  void initState() {
+    super.initState();
+
+    SystemChannels.lifecycle.setMessageHandler((message) {
+      debugPrint('Message: $message');
+
+      final currentUser = ref.read(authRepositoryProvider).currentUser;
+      if (currentUser != null) {
+        if (message.toString().contains('resume')) {
+          ref.read(updateActiveStatusProvider.notifier).updateStatus(true);
+        }
+        if (message.toString().contains('pause')) {
+          ref.read(updateActiveStatusProvider.notifier).updateStatus(false);
+        }
+      }
+
+      return Future.value(message);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final classrooms = ref.watch(classroomsProvider);
     final user = ref.watch(authRepositoryProvider).currentUser;
     return Scaffold(
