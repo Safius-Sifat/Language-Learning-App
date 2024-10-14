@@ -61,3 +61,26 @@ class VocabularyMarkComplete extends _$VocabularyMarkComplete {
     return !state.hasError;
   }
 }
+
+@riverpod
+class EditPost extends _$EditPost {
+  @override
+  FutureOr<void> build() async {
+    return;
+  }
+
+  Future<bool> edit(
+      {required String postId,
+      required String name,
+      required String deadline}) async {
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(
+      () async {
+        return ref
+            .read(vocabularyRepositoryProvider)
+            .editPost(name: name, deadline: deadline, postId: postId);
+      },
+    );
+    return !state.hasError;
+  }
+}

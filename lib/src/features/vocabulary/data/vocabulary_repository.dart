@@ -37,6 +37,16 @@ class VocabularyRepository {
       'participants': FieldValue.arrayUnion([participant.toJson()])
     });
   }
+
+  Future<void> editPost(
+      {required String postId,
+      required String name,
+      required String deadline}) async {
+    return _firestore
+        .collection(FirebaseConstants.postCollection)
+        .doc(postId)
+        .update({'name': name, 'deadline': deadline});
+  }
 }
 
 @riverpod

@@ -85,8 +85,7 @@ class _ChatRoomState extends ConsumerState<GroupChatRoom> {
                                 if (temp.isNotEmpty) {
                                   await ref
                                       .read(sendGroupMessageProvider.notifier)
-                                      .send(classroom.id!,
-                                          _messageController.text);
+                                      .send(classroom.id!, temp);
                                 }
                               },
                               icon: const Icon(

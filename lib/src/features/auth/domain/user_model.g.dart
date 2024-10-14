@@ -23,7 +23,7 @@ Map<String, dynamic> _$$UserModelImplToJson(_$UserModelImpl instance) =>
       'email': instance.email,
       'name': instance.name,
       'photoUrl': instance.photoUrl,
-      'createdAt': instance.createdAt.toIso8601String(),
-      'lastActive': instance.lastActive.toIso8601String(),
+      'createdAt': _toJsonTimestamp(instance.createdAt),
+      'lastActive': _toJsonTimestamp(instance.lastActive),
       'isOnline': instance.isOnline,
     };

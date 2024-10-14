@@ -10,6 +10,7 @@ import 'package:language_learning_app/src/features/class/presentation/all_classr
 import 'package:language_learning_app/src/features/class/presentation/classroom_actions/create_classroom.dart';
 import 'package:language_learning_app/src/features/class/presentation/detail/classroom_people.dart';
 import 'package:language_learning_app/src/features/class/presentation/detail/classroom_posts.dart';
+import 'package:language_learning_app/src/features/class/presentation/detail/edit_post.dart';
 import 'package:language_learning_app/src/features/class/presentation/detail/participant_screen.dart';
 import 'package:language_learning_app/src/features/pronunciation/presentation/create_challenge/create_pronunciation_screen.dart';
 import 'package:language_learning_app/src/features/pronunciation/presentation/create_challenge/select_pronunciation_screen.dart';
@@ -50,6 +51,7 @@ enum AppRoute {
   chat,
   chatRoom,
   groupChatRoom,
+  editPost,
 }
 
 final _chatNavigatorKey = GlobalKey<NavigatorState>();
@@ -130,15 +132,6 @@ GoRouter goRouter(GoRouterRef ref) {
               ),
             ),
           ),
-          // GoRoute(
-          //   path: 'posts',
-          //   name: AppRoute.posts.name,
-          //   pageBuilder: (context, state) => NoTransitionPage(
-          //     child: ClassroomPosts(
-          //       classroom: state.extra! as Classroom,
-          //     ),
-          //   ),
-          // ),
           GoRoute(
             path: 'createPronunciation/:text/:name/:deadline/:classroomId',
             name: AppRoute.createPronunciation.name,
@@ -212,12 +205,24 @@ GoRouter goRouter(GoRouterRef ref) {
             branches: [
               StatefulShellBranch(navigatorKey: _postsNavigatorKey, routes: [
                 GoRoute(
-                  path: 'posts',
-                  name: AppRoute.posts.name,
-                  pageBuilder: (context, state) => const NoTransitionPage(
-                    child: ClassroomPosts(),
-                  ),
-                ),
+                    path: 'posts',
+                    name: AppRoute.posts.name,
+                    pageBuilder: (context, state) => const NoTransitionPage(
+                          child: ClassroomPosts(),
+                        ),
+                    routes: [
+                      GoRoute(
+                        path: 'editPost/:name/:deadline/:postId',
+                        name: AppRoute.editPost.name,
+                        pageBuilder: (context, state) => NoTransitionPage(
+                          child: EditPostScreen(
+                            name: state.pathParameters['name']!,
+                            deadline: state.pathParameters['deadline']!,
+                            postId: state.pathParameters['postId']!,
+                          ),
+                        ),
+                      ),
+                    ]),
               ]),
               StatefulShellBranch(navigatorKey: _chatNavigatorKey, routes: [
                 GoRoute(

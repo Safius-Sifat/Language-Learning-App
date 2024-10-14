@@ -43,21 +43,24 @@ class ClassroomPeople extends ConsumerWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: students
                       .map(
-                        (student) => Row(
-                          children: [
-                            if (student.photoUrl != null)
-                              CircleAvatar(
-                                radius: 16,
-                                backgroundImage:
-                                    NetworkImage(student.photoUrl!),
-                              )
-                            else
-                              Initicon(
-                                  text: student.name ?? student.email,
-                                  size: 32.0),
-                            gapW8,
-                            Text(student.name ?? student.email),
-                          ],
+                        (student) => Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: Row(
+                            children: [
+                              if (student.photoUrl != null)
+                                CircleAvatar(
+                                  radius: 16,
+                                  backgroundImage:
+                                      NetworkImage(student.photoUrl!),
+                                )
+                              else
+                                Initicon(
+                                    text: student.name ?? student.email,
+                                    size: 32.0),
+                              gapW8,
+                              Text(student.name ?? student.email),
+                            ],
+                          ),
                         ),
                       )
                       .toList(),

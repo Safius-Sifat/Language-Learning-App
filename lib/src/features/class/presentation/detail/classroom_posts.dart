@@ -180,6 +180,12 @@ class ClassroomPosts extends ConsumerWidget {
                                   context.pushNamed(AppRoute.participants.name,
                                       extra: post.participants);
                                 } else {
+                                  if (post.deadline.isBefore(DateTime.now())) {
+                                    successToast(
+                                        ctx: context,
+                                        title: 'Assignment deadline is over');
+                                    return;
+                                  }
                                   context.pushNamed(
                                     AppRoute.learnVocabulary.name,
                                     extra: post,
@@ -225,6 +231,20 @@ class ClassroomPosts extends ConsumerWidget {
                                                         .deletePost(post.id!);
                                                   },
                                                 ),
+                                                PopupMenuItem(
+                                                  child: const Text('Edit'),
+                                                  onTap: () async {
+                                                    context.goNamed(
+                                                        AppRoute.editPost.name,
+                                                        pathParameters: {
+                                                          'name': post.name,
+                                                          'deadline': post
+                                                              .deadline
+                                                              .toIso8601String(),
+                                                          'postId': post.id!,
+                                                        });
+                                                  },
+                                                ),
                                               ];
                                             },
                                           ),
@@ -252,14 +272,23 @@ class ClassroomPosts extends ConsumerWidget {
                                                   fontWeight: FontWeight.w600)),
                                     ),
                                     const Spacer(),
-                                    Text(
-                                        'Created at ${DateFormat('d MMM, h:mm a').format(post.createdAt)}',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyMedium!
-                                            .copyWith(
-                                                fontSize: 12,
-                                                color: Colors.grey)),
+                                    if (post.deadline.isAfter(DateTime.now()))
+                                      Text(
+                                          'Deadline at ${DateFormat('d MMM, h:mm a').format(post.deadline)}',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium!
+                                              .copyWith(
+                                                  fontSize: 12,
+                                                  color: Colors.grey))
+                                    else
+                                      Text('Deadline reached',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium!
+                                              .copyWith(
+                                                  fontSize: 12,
+                                                  color: Colors.grey))
                                   ],
                                 ),
                               ),
@@ -276,6 +305,12 @@ class ClassroomPosts extends ConsumerWidget {
                                   context.pushNamed(AppRoute.participants.name,
                                       extra: post.participants);
                                 } else {
+                                  if (post.deadline.isBefore(DateTime.now())) {
+                                    successToast(
+                                        ctx: context,
+                                        title: 'Assignment deadline is over');
+                                    return;
+                                  }
                                   context.pushNamed(
                                     AppRoute.recordPronunciation.name,
                                     extra: post,
@@ -321,6 +356,20 @@ class ClassroomPosts extends ConsumerWidget {
                                                         .deletePost(post.id!);
                                                   },
                                                 ),
+                                                PopupMenuItem(
+                                                  child: const Text('Edit'),
+                                                  onTap: () async {
+                                                    context.goNamed(
+                                                        AppRoute.editPost.name,
+                                                        pathParameters: {
+                                                          'name': post.name,
+                                                          'deadline': post
+                                                              .deadline
+                                                              .toIso8601String(),
+                                                          'postId': post.id!,
+                                                        });
+                                                  },
+                                                ),
                                               ];
                                             },
                                           ),
@@ -348,14 +397,23 @@ class ClassroomPosts extends ConsumerWidget {
                                                   fontWeight: FontWeight.w600)),
                                     ),
                                     const Spacer(),
-                                    Text(
-                                        'Created at ${DateFormat('d MMM, h:mm a').format(post.createdAt)}',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyMedium!
-                                            .copyWith(
-                                                fontSize: 12,
-                                                color: Colors.grey)),
+                                    if (post.deadline.isAfter(DateTime.now()))
+                                      Text(
+                                          'Deadline at ${DateFormat('d MMM, h:mm a').format(post.deadline)}',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium!
+                                              .copyWith(
+                                                  fontSize: 12,
+                                                  color: Colors.grey))
+                                    else
+                                      Text('Deadline reached',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium!
+                                              .copyWith(
+                                                  fontSize: 12,
+                                                  color: Colors.grey))
                                   ],
                                 ),
                               ),

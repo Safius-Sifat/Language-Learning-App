@@ -55,7 +55,6 @@ class ChatScreen extends ConsumerWidget {
               data: (users) => ListView.builder(
                 itemCount: users.length + 1,
                 itemBuilder: (context, index) {
-                  final user = users[index - 1];
                   if (index == 0) {
                     return ListTile(
                       onTap: () {
@@ -65,6 +64,8 @@ class ChatScreen extends ConsumerWidget {
                       title: const Text('Group chat'),
                     );
                   }
+
+                  final user = users[index - 1];
                   return ListTile(
                     leading: user.photoUrl == null
                         ? Initicon(text: user.name ?? user.email, size: 32.0)

@@ -40,5 +40,20 @@ final vocabularyMarkCompleteProvider =
 );
 
 typedef _$VocabularyMarkComplete = AutoDisposeAsyncNotifier<void>;
+String _$editPostHash() => r'17406558ab4a7795d2ad208b91a9324508b8ada5';
+
+/// See also [EditPost].
+@ProviderFor(EditPost)
+final editPostProvider =
+    AutoDisposeAsyncNotifierProvider<EditPost, void>.internal(
+  EditPost.new,
+  name: r'editPostProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$editPostHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$EditPost = AutoDisposeAsyncNotifier<void>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

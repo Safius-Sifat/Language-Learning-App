@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_initicon/flutter_initicon.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:language_learning_app/src/constants/app_sizes.dart';
 import 'package:language_learning_app/src/features/auth/domain/user_model.dart';
 import 'package:language_learning_app/src/features/auth/repository/auth_repository.dart';
 import 'package:language_learning_app/src/features/chat/data/chat_repository.dart';
@@ -40,15 +41,19 @@ class _ChatRoomState extends ConsumerState<ChatRoom> {
             children: [
               if (widget.user.photoUrl != null)
                 CircleAvatar(
-                  radius: 16,
+                  radius: 12,
                   backgroundImage: NetworkImage(widget.user.photoUrl!),
                 )
               else
                 Initicon(
                   text: widget.user.name ?? widget.user.email,
-                  size: 32,
+                  size: 24,
                 ),
-              Text(widget.user.name ?? widget.user.email),
+              gapW8,
+              Text(
+                widget.user.name ?? widget.user.email,
+                style: const TextStyle(fontSize: 16),
+              ),
             ],
           ),
         ),
@@ -100,8 +105,7 @@ class _ChatRoomState extends ConsumerState<ChatRoom> {
                                 if (temp.isNotEmpty) {
                                   await ref
                                       .read(sendMessageProvider.notifier)
-                                      .send(
-                                          widget.user, _messageController.text);
+                                      .send(widget.user, temp);
                                 }
                               },
                               icon: const Icon(

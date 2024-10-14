@@ -11,9 +11,15 @@ abstract class UserModel implements _$UserModel {
     required String email,
     String? name,
     String? photoUrl,
-    @JsonKey(name: 'createdAt',fromJson:_fromJsonTimestamp )   
+    @JsonKey(
+        name: 'createdAt',
+        fromJson: _fromJsonTimestamp,
+        toJson: _toJsonTimestamp)
     required DateTime createdAt,
-    @JsonKey(name: 'lastActive',fromJson:_fromJsonTimestamp )  
+    @JsonKey(
+        name: 'lastActive',
+        fromJson: _fromJsonTimestamp,
+        toJson: _toJsonTimestamp)
     required DateTime lastActive,
     required bool isOnline,
   }) = _UserModel;
@@ -38,5 +44,7 @@ abstract class UserModel implements _$UserModel {
   Map<String, dynamic> toDocument() => toJson()..remove('id');
 }
 
-  DateTime _fromJsonTimestamp(Timestamp timestamp) =>
-      timestamp.toDate(); // Add this method
+Timestamp _toJsonTimestamp(DateTime dateTime) =>
+    Timestamp.fromDate(dateTime); // Add this method
+DateTime _fromJsonTimestamp(Timestamp timestamp) =>
+    timestamp.toDate(); // Add this method
